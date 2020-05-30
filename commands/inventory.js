@@ -16,7 +16,7 @@ exports.run = (args, message, bot, cmds) => {
         .setFooter(`• Requested By: ${message.author.tag}`, message.author.avatarURL)
         message.channel.send(inventoryembed);
         
-        message.reply(inventory.check)
+        //message.reply(inventory.check)
         //if(inv.toString() === 0){
         if(inventory.check === '-'){
         const inventorycheck = new Discord.RichEmbed()
