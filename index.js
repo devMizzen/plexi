@@ -3,7 +3,6 @@ const fs = require("fs");
 const Enmap = require("enmap");
 const bot = new Discord.Client();
 const config = bot.config = require("./config.json");
-const colors = bot.colors = require('./colours.json');
 
 bot.commands = new Enmap();
 bot.functions = new Enmap();
