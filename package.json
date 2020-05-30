@@ -12,6 +12,7 @@
   "dependencies": {
     "better-sqlite3": "^5.4.3",
     "discord.js": "^11.5.1",
+    "enmap": "^5.2.4",
     "eventhandler": "^2.1.0",
     "mathjs": "^6.2.3",
     "node-gyp": "^6.0.1",
