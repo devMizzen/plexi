@@ -1,5 +1,5 @@
 const Discord = require("discord.js");
-const inventory = require("./commands/inventory.json")
+const inventory = require("./inventory.json")
 const spawn = require("child_process").spawn;
 const fs = require('fs');
 
