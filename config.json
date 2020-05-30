@@ -1,0 +1,5 @@
+{
+    "token": "process.env.token",
+    "prefix": "/",
+    "error" : "#ff3300"
+}
