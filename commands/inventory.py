@@ -15,7 +15,7 @@ dependancies = db['Dependancies']
 inventory = {}
 
 userList = dependancies.find_one({"_id":"UserList"})
-if userList == None
+if userList == None:
 	dependancies.insert_one({"_id": "UserList"})
 	userList = dependancies.find_one({"_id":"UserList"})
 if id in userList:
