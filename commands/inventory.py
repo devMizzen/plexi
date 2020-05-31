@@ -5,10 +5,10 @@ import pymongo
 
 from pymongo import MongoClient as mongo
 
+id = str(sys.argv[1])
+
 print(0)
 sys.stdout.flush()
-
-id = str(sys.argv[1])
 
 cluster = mongo(os.environ["MONGO_URL"])  #Same as process.env.MONGO_URL
 db = cluster.plexi_users 
@@ -33,7 +33,7 @@ else:
 				id: None
 			}
 		}
-	)
+	) 
 
 if pre_existance == True:
 
