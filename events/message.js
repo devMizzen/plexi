@@ -1,5 +1,7 @@
 const Discord = require('discord.js');
 const fs = require('fs');
+const cluster = new MongoClient(uri, { useNewUrlParser: true });
+
 
 module.exports = (bot, message) => {
   if (message.author.bot) return;
