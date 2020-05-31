@@ -4,7 +4,7 @@ const spawn = require("child_process").spawn;
 const fs = require('fs');
 
 const MongoClient = require('mongodb').MongoClient;
-const uri = process.env.MONGO_URL;
+const uri = process.env.MONGOLAB_URL;
 const cluster = new MongoClient(uri);
 
 
