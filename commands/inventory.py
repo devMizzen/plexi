@@ -23,7 +23,7 @@ if id in userList:
 	pre_existance = True
 else:
 	pre_existance = False
-	userList = dependancies.find_one_and_update(
+	dependancies.update_one(
 		{"_id": "UserList"},
 		{
 			"$set": {id: None}
@@ -53,7 +53,7 @@ if pre_existance == True:
 		inventory["torso"] = data["torso"]
 		inventory["shoe"] = data["shoe"]
 		inventory["isEmpty"] = "False"
-		dependancies.find_one_and_replace(
+		dependancies.replace_one(
 			{"_id": "inventory", inventory}
 		)
 			
@@ -91,4 +91,6 @@ else:
 		inventory
 	)
 
-result
+result = 0
+print(result)
+sys.stdout.flush()
