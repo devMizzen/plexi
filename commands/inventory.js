@@ -5,7 +5,7 @@ const fs = require('fs');
 
 const MongoClient = require('mongodb').MongoClient;
 const uri = process.env.MONGO_URL;
-const cluster = new MongoClient(uri, { useNewUrlParser: true });
+const cluster = new MongoClient(uri);
 
 
 exports.run = (args, message, bot, cmds) => {
