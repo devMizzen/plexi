@@ -8,6 +8,7 @@ from pymongo import MongoClient as mongo
 id = str(sys.argv[1])
 
 cluster = mongo(os.environ["MONGOLAB_URL"])  #Same as process.env.MONGO_URL
+
 db = cluster['plexi_users']
 player = db.id
 dependancies = db['Dependancies']
@@ -75,14 +76,14 @@ if pre_existance == True:
 else:
 	
 	inventory["_id"] = "inventory"
-	inventory["lh"] = '--'
+	inventory["lh"] = None
 	for i in range(32):
 		slotNo = "slot"+ str(i+1)
-		inventory[slotNo] = '--'
-	inventory["head"] = '--'
-	inventory["chest"] = '--'
-	inventory["torso"] = '--'
-	inventory["shoe"] = '--'
+		inventory[slotNo] = None
+	inventory["head"] = None
+	inventory["chest"] = None
+	inventory["torso"] = None
+	inventory["shoe"] = None
 	inventory["isEmpty"] = True
 	player.insert_one(inventory)
 	tempInv = dependancies.find_one_and_replace(
