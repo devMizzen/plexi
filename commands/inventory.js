@@ -88,7 +88,7 @@ exports.run = (args, message, bot, cmds, cluster) => {
             message.author.send(inventoryshow2)
 
         }
-        client.close();
+        cluster.close();
      });
     });
 }
