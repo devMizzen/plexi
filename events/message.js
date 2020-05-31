@@ -2,7 +2,7 @@ const Discord = require('discord.js');
 const fs = require('fs');
 const MongoClient = require('mongodb').MongoClient;
 const uri = process.env.MONGOLAB_URL;
-const cluster = new MongoClient(uri, { useNewUrlParser: true }, { useUnifiedTopology: true });
+const cluster = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 
 
