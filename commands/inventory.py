@@ -1,70 +1,83 @@
 import os
 import sys
 import json
+import pymongo
+
+from pymongo import MongoClient as mongo
+
 
 id = str(sys.argv[1])
+
+cluster = mongo(os.environ["MONGO_URL"])  #Same as process.env.MONGO_URL
+db = cluster.plexi_users 
+player = db.id
+dependancies = db.Dependancies
+
 inventory = {}
 
-f = open("userlist.txt", "a+")
-f.close()
-
-f = open("userlist.txt", "r")
-if id in f.read():
-	f.close()
+try:
+	userList = dependancies.find_one({"_id":"UserList:"})
+except:
+	dependancies.insert_one({"_id": "UserList"})
+	userList = dependancies.find_one({"_id":"UserList"})
+if id in userList:
 	pre_existance = True
 else:
-	f.close()
 	pre_existance = False
-	f = open("userlist.txt", "a")
-	f.write(id + '\n')
-	f.close()
-	
-fileDir = "./commands/Database/"+id
-try:
-	os.mkdir(fileDir)
-except:
-	pass
-fileName = fileDir+"/playerInventory.json"
-f = open(fileName,'a+')
-f.close()
-if pre_existance == True:
-	with open(fileName,"r",encoding="utf-8") as userFile:
-		data = json.load(userFile)
-		
-		isEmpty = True
-		for slot in data:
-			if (data[slot] != "--"):
-				if slot != "check":
-					isEmpty = False
-					
-		if isEmpty == False:
-			with open("./commands/inventory.json", "w",encoding="utf-8") as fil:
-				inventory["lh"] = data["lh"]
-				for i in range(32):
-					slotNo = "slot"+ str(i+1)
-					inventory[slotNo] = data[slotNo]
-				inventory["head"] = data["head"]
-				inventory["chest"] = data["chest"]
-				inventory["torso"] = data["torso"]
-				inventory["shoe"] = data["shoe"]
-				inventory["check"] = "--"
+	userList = dependancies.find_one_and_update(
+		{"_id": "UserList"},
+		{
+			"$set": {
+				id: None
+			}
+		}
+	)
 
-				fil.write(json.dumps(inventory))
-			fil.close()
-			result = 0
+if pre_existance == True:
+
+	data = player.find_one("_id": "inventory")
+	isEmpty = data["isEmpty"]
+	'''isEmpty = "True"
+	for slot in data:
+		if (data[slot] != "--"):
+			if slot != "isEmpty" or slot != "_id":
+				isEmpty = "False"'''
+					
+	if isEmpty == "False":
+		
+		inventory["_id"] = "inventory"
+		inventory["lh"] = data["lh"]
+		for i in range(32):
+			slotNo = "slot"+ str(i+1)
+			inventory[slotNo] = data[slotNo]
+		inventory["head"] = data["head"]
+		inventory["chest"] = data["chest"]
+		inventory["torso"] = data["torso"]
+		inventory["shoe"] = data["shoe"]
+		inventory["isEmpty"] = "False"
+		dependancies.find_one_and_replace(
+			{"_id": "inventory", inventory}
+		)
+			
 				
-		else:
-			with open("./commands/inventory.json", "w",encoding="utf-8") as inv:
-				inventory["check"] = '-'
-				inv.write(json.dumps(inventory))
-			inv.close()
-			result = 0
-	userFile.close()
+	else:
+		inv = dependancies.update_one(
+			{"_id": "inventory"}.
+			{
+				"$set" {
+					"_id": id
+					"isEmpty": "True"
+				}
+			}
+	
+
+	
 			#print(result)
 			#sys.stdout.flush()
 
 else:
 	
+	inventory["_id"] = "inventory"
 	inventory["lh"] = '--'
 	for i in range(32):
 		slotNo = "slot"+ str(i+1)
@@ -73,16 +86,13 @@ else:
 	inventory["chest"] = '--'
 	inventory["torso"] = '--'
 	inventory["shoe"] = '--'
+	inventory["isEmpty"] = True
+	player.insert_one(inventory)
+	tempInv = dependancies.find_one_and_replace(
+		{"_id": "inventory"},
+		inventory
+	)
 
-	with open(fileName,"w",encoding="utf-8") as UserFile:
-		UserFile.write(json.dumps(inventory))
-	UserFile.close()
-	inventory["check"] = '-'
-	
-	with open("./commands/inventory.json","w",encoding="utf-8") as UserFile:
-		UserFile.write(json.dumps(inventory))
-	UserFile.close()
-
-	result = 0
+result = 0
 print(result)
 sys.stdout.flush()
