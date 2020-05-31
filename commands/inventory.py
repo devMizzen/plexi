@@ -37,11 +37,6 @@ if pre_existance == True:
 
 	data = player.find_one("_id": "inventory")
 	isEmpty = data["isEmpty"]
-	'''isEmpty = "True"
-	for slot in data:
-		if (data[slot] != "--"):
-			if slot != "isEmpty" or slot != "_id":
-				isEmpty = "False"'''
 					
 	if isEmpty == "False":
 		
@@ -66,7 +61,7 @@ if pre_existance == True:
 			{
 				"$set" {
 					"_id": id
-					"isEmpty": "True"
+					"isEmpty": True
 				}
 			}
 	
