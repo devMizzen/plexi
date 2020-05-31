@@ -12,7 +12,7 @@ exports.run = (args, message, bot, cmds) => {
     const userid = `${message.author.id}`;
 
    
-    client.connect(err => {
+    cluster.connect(err => {
     const db = cluster.db("plexi_users")
     const player = db.collection(userid)
     const inventory = player.findOne(
