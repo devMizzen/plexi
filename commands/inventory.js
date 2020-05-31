@@ -1,15 +1,29 @@
 const Discord = require("discord.js");
-const inventory = require("./inventory.json")
+//const inventory = require("./inventory.json")
 const spawn = require("child_process").spawn;
 const fs = require('fs');
 
+const MongoClient = require('mongodb').MongoClient;
+const uri = process.env.MONGO_URL;
+const cluster = new MongoClient(uri, { useNewUrlParser: true });
+
+
 exports.run = (args, message, bot, cmds) => {
-    let userid = `${message.author.id}`;
+    const userid = `${message.author.id}`;
 
-
+   
+    client.connect(err => {
+    const db = cluster.db("plexi_users")
+    const player = db.collection(userid)
+    const inventory = player.findOne(
+        {'_id': 'inventory'}
+        
+    )
+    
     const pythonProcess = spawn('python',["./commands/inventory.py", userid]);
     pythonProcess.stdout.on('data', (inv) => {
         //console.log(inv.toString())
+
         const inventoryembed = new Discord.RichEmbed()
         .setTitle(`${message.author.username}'s Inventory`)
         .setDescription("For the sake of privacy of your inventory, it has been sent to your direct messages.")
@@ -77,5 +91,7 @@ exports.run = (args, message, bot, cmds) => {
             message.author.send(inventoryshow2)
 
         }
+        client.close();
+     });
     });
 }
