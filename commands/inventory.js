@@ -3,17 +3,13 @@ const Discord = require("discord.js");
 const spawn = require("child_process").spawn;
 const fs = require('fs');
 
-const MongoClient = require('mongodb').MongoClient;
-const uri = process.env.MONGO_URL;
-const cluster = new MongoClient(uri, { useNewUrlParser: true });
 
 
-exports.run = (args, message, bot, cmds) => {
+exports.run = (args, message, bot, cmds, cluster) => {
     const userid = `${message.author.id}`;
 
    
     cluster.connect(err => {
-    if(err) return console.error(err);
     const db = cluster.db("plexi_users")
     const player = db.collection(userid)
     const inventory = player.findOne(

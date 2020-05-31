@@ -18,5 +18,5 @@ module.exports = (bot, message) => {
   let cmd = bot.commands.get(args[0].toLowerCase());
   let cmds = args.shift().toLowerCase();
   if (cmd == undefined) return;
-  cmd.run(args, message, bot, cmds);
+  cmd.run(args, message, bot, cmds, cluster);
 };
