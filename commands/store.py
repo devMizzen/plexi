@@ -13,35 +13,85 @@ from pymongo import MongoClient as mongo
 
 id = sys.argv[1]
 
-cluster = mongo(os.environ["MONGO_URL"])  #Same as process.env.MONGO_URL
-db = cluster.plexi_users 
-player = db.id
-dependancies = db.Dependancies
+global cluster = mongo(os.environ["MONGO_URL"])  #Same as process.env.MONGO_URL
+global db = cluster.plexi_users 
+global player = db.id
+global dependancies = db.Dependancies
 
-numOfEntities = len(dependancies.find_one({"_id": "entityIDs"},))
+global numOfEntities = len(dependancies.find_one({"_id": "entityIDs"},))
 
 #---------------------------------------------------------#
 #						Functions						  #
 #---------------------------------------------------------#
+
+def getQty(item):
+	playerInv = player.find_one({"_id": "inventory"})
+	invQty = 0
+	for slot in playerInv:
+		if slot == "isEmpty":
+			continue
+		itemQty = ''
+		if item in playerInv[slot]:
+			for ch in playerInv[slot]:
+				if ch == 'x' or ch == '-':
+					break
+				itemQty += ch
+			invQty += int(itemQty)
+	return(invQty)
+	
+def setQty(item, qty)
+	playerInv = player.find_one({"_id": "inventory"})
+	locs = []
+	while qty > 0
+		for slot in playerInv:		#For each slot in inventory
+			if slot == "isEmpty":
+				continue
+			itemQty = ''
+			if item in playerInv[slot]:	
+				locs.append(slot)
+				for ch in playerInv[slot]: #for each character in the value
+					if ch == 'x' or ch == ':
+						break
+					itemQty += ch
+				itemQty = int(itemQty)
+				
+				if itemQty+qty <= 64:
+					playerInv[slot] = str(itemQty+qty) + "x " + item
+					qty = 0
+					
+			elif qty!= 0:
+				for slot in playerInv:
+					if slot == "isEmpty":
+						continue
+					if playerInv[slot] == None:
+						break
+				emptySlot = slot
+				if itemQty+qty <= 64:
+					player.update_one(
+						{"_id" : "inventory"},
+						"$set" {
+							emptySlot: str(itemQty+qty) + "x " + item
+						}
+					)
+				else
+					
+			
+			
+			
+				
+				
 
 def price(item):
 	itemPrices = dependancies.find_one({"_id": "itemPrices"})
 	itemPrice = int(itemPrices[item])
 	return itemPrice
 	
-def inventory(id, method, itemName, *arg):
+def inventory(method, itemName, *arg):
 	if method == 'chk':
-		playerInv = player.find_one({"_id": "inventory"})
-		inventoryQty = 0
-		for slot in playerInv:
-			itemQty = ''
-			if itemName in playerInv[slot]:
-				for ch in playerInv[slot]:
-					if ch == 'x' or ch == '-':
-						break
-					itemQty += ch
-				inventoryQty += int(itemQty)
-		if inventoryQty >= qty:
+		invQty = getQty(itemName)
+		if invQty >= qty:
+			return True
+		else:
 			return False
 
 		'''filename = "./commands/Database/"+id+".xlsx"
@@ -58,7 +108,10 @@ def inventory(id, method, itemName, *arg):
 		
 	elif method == "sub":
 		SubQty = qty
-		filename = "./commands/Database/"+id+".xlsx"
+		playerInv = player.find_one({"_id": "inventory"})
+		invQty = getQty(itemName)
+		
+		'''filename = "./commands/Database/"+id+".xlsx"
 		wb = openpyxl.load_Workbook(filename)
 		ws = wb[Inventory]
 		
@@ -76,7 +129,7 @@ def inventory(id, method, itemName, *arg):
 				elif qty > ws[itemQty]:
 					ws[itemQty] = None
 					ws[currentItem] = None
-					SubQty -= itemQty
+					SubQty -= itemQty'''
 
 	elif method == 'add':
 		addQty = qty
@@ -144,7 +197,7 @@ def raiseError(errorCode):
 #						  Main  						  #
 #---------------------------------------------------------#
 
-if argv[1].lower() != "price":
+if argv[2].lower() != "price":
 	item = sys.argv[3]
 	qty = sys.argv[4]
 	size = sys.argv[5]

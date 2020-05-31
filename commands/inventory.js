@@ -19,7 +19,7 @@ exports.run = (args, message, bot, cmds, cluster) => {
     console.log('Connected... Transmission Successful!')
     const pythonProcess = spawn('python',["./commands/inventory.py", userid]);
     pythonProcess.stdout.on('data', (inv) => {
-        //console.log(inv.toString())
+        console.log(inv.toString())
 
         const inventoryembed = new Discord.RichEmbed()
         .setTitle(`${message.author.username}'s Inventory`)

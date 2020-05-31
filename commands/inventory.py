@@ -5,6 +5,8 @@ import pymongo
 
 from pymongo import MongoClient as mongo
 
+print(0)
+sys.stdout.flush()
 
 id = str(sys.argv[1])
 
@@ -37,8 +39,13 @@ if pre_existance == True:
 
 	data = player.find_one("_id": "inventory")
 	isEmpty = data["isEmpty"]
+	'''isEmpty = "True"
+	for slot in data:
+		if (data[slot] != "--"):
+			if slot != "isEmpty" or slot != "_id":
+				isEmpty = "False"'''
 					
-	if isEmpty == "False":
+	if isEmpty == False:
 		
 		inventory["_id"] = "inventory"
 		inventory["lh"] = data["lh"]
