@@ -13,6 +13,7 @@ exports.run = (args, message, bot, cmds) => {
 
    
     cluster.connect(err => {
+    if(err) return console.error(err);
     const db = cluster.db("plexi_users")
     const player = db.collection(userid)
     const inventory = player.findOne(
