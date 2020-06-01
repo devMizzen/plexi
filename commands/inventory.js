@@ -19,6 +19,7 @@ exports.run = (args, message, bot, cmds, cluster) => {
         const dependancies = db.collection("Dependancies")
         const inventory = player.findOne({'_id': 'inventory'})
         player.find({'_id': 'inventory'}).toArray((err, items) => {console.log(items)});
+        invObj = inventory.toObject()
         const userList = dependancies.findOne({_id: "UserList"});
 
         /*player.find({'_id': 'inventory'}).toArray((err, items) => {   
@@ -27,7 +28,7 @@ exports.run = (args, message, bot, cmds, cluster) => {
 
         console.log(Object.values(userList));*/
 
-        console.log(inventory.isEmpty);
+        console.log(invObj.isEmpty);
 
         const inventoryembed = new Discord.RichEmbed()
         .setTitle(`${message.author.username}'s Inventory`)
@@ -38,7 +39,7 @@ exports.run = (args, message, bot, cmds, cluster) => {
         //message.reply(inventory.check)
         //if(inv.toString() === 0){
         
-        if(inventory.isEmpty === true){
+        if(invObj.isEmpty === true){
         //if(inventory.check === '-'){
         const inventorycheck = new Discord.RichEmbed()
         .setTitle(`${message.author.username}'s Inventory`)
@@ -48,7 +49,7 @@ exports.run = (args, message, bot, cmds, cluster) => {
         } 
         //message.reply(inventory.check)
         //if(inv.toString() === 0){
-        if(inventory.isEmpty === false){     
+        if(invObj.isEmpty === false){     
         
             const inventoryshow1 = new Discord.RichEmbed()
             .setTitle(`${message.author.username}'s Inventory`)  
