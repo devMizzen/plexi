@@ -14,8 +14,7 @@ exports.run = (args, message, bot, cmds, cluster) => {
 
         const db = cluster.db('plexi_users');
         const player = db.collection(userid);
-        const inventory = player.findOne({"_id": 'inventory' });
-        console.log(typeof(inventory))
+        const inventory = player.findOne({_id: 'inventory' });
 
         console.log(Object.values(inventory));
 
