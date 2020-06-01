@@ -9,13 +9,14 @@ exports.run = (args, message, bot, cmds, cluster) => {
     const userid = `${message.author.id}`;
 
     cluster.connect(err => {
+    
     console.log('Connected... Transmission Successful!')
     const pythonProcess = spawn('python',["./commands/inventory.py", userid]);
     pythonProcess.stdout.on('data', (inv) => {
 
         const db = cluster.db('plexi_users')
         const player = db.collection(userid)
-        const inventory = player.findOne({"_id": 'inventory' })
+        const inventory = player.findOne({_id: 'inventory' })
         console.log(inventory.isEmpty);
 
         const inventoryembed = new Discord.RichEmbed()
@@ -87,7 +88,7 @@ exports.run = (args, message, bot, cmds, cluster) => {
             message.author.send(inventoryshow2)
 
         }
-        cluster.close();
+        //cluster.close();
      });
     });
 }
