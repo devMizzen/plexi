@@ -5,11 +5,9 @@ import pymongo
 
 from pymongo import MongoClient as mongo
 
-#id = str(sys.argv[1])
-id = 786
+id = str(sys.argv[1])
 
-cluster = mongo("mongodb+srv://plexi-bot:saz11722@plexi-database-imh57.gcp.mongodb.net/test?retryWrites=true&w=majority")
-#cluster = mongo(os.environ["MONGOLAB_URL"])  #Same as process.env.MONGO_URL
+cluster = mongo(os.environ["MONGOLAB_URL"])  #Same as process.env.MONGO_URL
 
 db = cluster['plexi_users']
 player = db[str(id)]
