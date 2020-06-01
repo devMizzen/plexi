@@ -5,13 +5,21 @@ import pymongo
 
 from pymongo import MongoClient as mongo
 
-id = str(sys.argv[1])
+#id = str(sys.argv[1])
+id = 786
 
-cluster = mongo(os.environ["MONGOLAB_URL"])  #Same as process.env.MONGO_URL
+cluster = mongo("mongodb+srv://plexi-bot:saz11722@plexi-database-imh57.gcp.mongodb.net/test?retryWrites=true&w=majority")
+#cluster = mongo(os.environ["MONGOLAB_URL"])  #Same as process.env.MONGO_URL
 
 db = cluster['plexi_users']
-player = db.id
+player = db[str(id)]
 dependancies = db['Dependancies']
+
+'''containers = cluster['Main']
+inventories = db["Inventories"]
+
+dependancies = cluster['Dependancies']
+injectors = dependancies["Injectors"]'''
 
 inventory = {}
 
@@ -26,14 +34,14 @@ else:
 	dependancies.update_one(
 		{"_id": "UserList"},
 		{
-			"$set": {id: None}
+			"$set": {str(id): None}
 		},
 		upsert=True
 	) 
 
 if pre_existance == True:
 
-	data = player.find_one("_id": "inventory")
+	data = player.find_one({"_id": "inventory"})
 	isEmpty = data["isEmpty"]
 	'''isEmpty = "True"
 	for slot in data:
@@ -54,27 +62,23 @@ if pre_existance == True:
 		inventory["shoe"] = data["shoe"]
 		inventory["isEmpty"] = "False"
 		dependancies.replace_one(
-			{"_id": "inventory", inventory}
+			{"_id": "inventory"}, 
+			{ "$set": inventory}
 		)
 			
 				
 	else:
 		inv = dependancies.update_one(
-			{"_id": "inventory"}.
-			{
-				"$set" {
-					"_id": id
-					"isEmpty": True
+			{"_id": "inventory"},
+			{"$set": {
+				"ID": id,
+				"isEmpty": True
 				}
 			}
-	
-
-	
+		)
 			#print(result)
 			#sys.stdout.flush()
-
-else:
-	
+else:	
 	inventory["_id"] = "inventory"
 	inventory["lh"] = None
 	for i in range(32):
@@ -86,7 +90,7 @@ else:
 	inventory["shoe"] = None
 	inventory["isEmpty"] = True
 	player.insert_one(inventory)
-	tempInv = dependancies.find_one_and_replace(
+	dependancies.replace_one(
 		{"_id": "inventory"},
 		inventory
 	)

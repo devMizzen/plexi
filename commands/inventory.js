@@ -19,7 +19,6 @@ exports.run = (args, message, bot, cmds, cluster) => {
     console.log('Connected... Transmission Successful!')
     const pythonProcess = spawn('python',["./commands/inventory.py", userid]);
     pythonProcess.stdout.on('data', (inv) => {
-        console.log(inv.toString())
 
         const inventoryembed = new Discord.RichEmbed()
         .setTitle(`${message.author.username}'s Inventory`)
@@ -29,7 +28,9 @@ exports.run = (args, message, bot, cmds, cluster) => {
         
         //message.reply(inventory.check)
         //if(inv.toString() === 0){
-        if(inventory.check === '-'){
+        
+        if(inventory.isEmpty === true){
+        //if(inventory.check === '-'){
         const inventorycheck = new Discord.RichEmbed()
         .setTitle(`${message.author.username}'s Inventory`)
         .setDescription("Your inventory is currently empty! Go fill me in!!")
@@ -38,7 +39,7 @@ exports.run = (args, message, bot, cmds, cluster) => {
         } 
         //message.reply(inventory.check)
         //if(inv.toString() === 0){
-        if(inventory.check === '--'){     
+        if(inventory.isEmpty === false){     
         
             const inventoryshow1 = new Discord.RichEmbed()
             .setTitle(`${message.author.username}'s Inventory`)  
