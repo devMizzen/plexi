@@ -16,6 +16,7 @@ exports.run = (args, message, bot, cmds, cluster) => {
         {'_id': 'inventory'}
         
     )
+    console.log(inventory)
     console.log('Connected... Transmission Successful!')
     const pythonProcess = spawn('python',["./commands/inventory.py", userid]);
     pythonProcess.stdout.on('data', (inv) => {
