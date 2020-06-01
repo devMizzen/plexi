@@ -15,6 +15,7 @@ exports.run = (args, message, bot, cmds, cluster) => {
         const db = cluster.db('plexi_users');
         const player = db.collection(userid);
         const inventory = player.findOne({"_id": 'inventory' });
+        console.log(typeof(inventory))
         console.log(inventory.isEmpty);
 
         const inventoryembed = new Discord.RichEmbed()
