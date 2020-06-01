@@ -28,6 +28,7 @@ exports.run = (args, message, bot, cmds, cluster) => {
         console.log(Object.values(userList));*/
 
         console.log(inventory);
+        console.log(inventory.isEmpty)
 
         const inventoryembed = new Discord.RichEmbed()
         .setTitle(`${message.author.username}'s Inventory`)
