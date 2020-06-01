@@ -20,7 +20,7 @@ exports.run = (args, message, bot, cmds, cluster) => {
         const inventory = player.findOne();
         const userList = dependancies.findOne({_id: "UserList"});
 
-        player.find({id: 'inventory'}).toArray((err, items) => {
+        player.find({'_id': 'inventory'}).toArray((err, items) => {
             console.log(items)
           })
 
