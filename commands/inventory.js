@@ -17,7 +17,7 @@ exports.run = (args, message, bot, cmds, cluster) => {
         const inventory = player.findOne({"_id": 'inventory' });
         console.log(typeof(inventory))
 
-        console.log(invObj._doc.isEmpty);
+        console.log(inventory._doc.isEmpty);
 
         const inventoryembed = new Discord.RichEmbed()
         .setTitle(`${message.author.username}'s Inventory`)
