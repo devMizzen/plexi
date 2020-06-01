@@ -2,11 +2,8 @@ const Discord = require("discord.js");
 //const inventory = require("./inventory.json")
 const spawn = require("child_process").spawn;
 const fs = require('fs');
-const MongoClient = require('mongodb').MongoClient;
-const uri = "mongodb+srv://plexi-bot:saz11722@plexi-database-imh57.gcp.mongodb.net/test?retryWrites=true&w=majority";
-const cluster = new MongoClient(uri, { useNewUrlParser: true,  useUnifiedTopology: true });
 
-exports.run = (args, message, bot, cmds) => {
+exports.run = (args, message, bot, cmds, cluster) => {
     const userid = `${message.author.id}`;
 
     cluster.connect(err => {
