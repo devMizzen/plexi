@@ -11,10 +11,7 @@ exports.run = (args, message, bot, cmds, cluster) => {
     cluster.connect(err => {
     const db = cluster.db('plexi_users')
     const player = db.collection(`${userid}`)
-    const inventory = player.find(
-        { "_id": 'inventory' }
-        
-    )
+    const inventory = player.findOne({"_id": 'inventory' }).toArray()
     console.log('Connected... Transmission Successful!')
     const pythonProcess = spawn('python',["./commands/inventory.py", userid]);
     pythonProcess.stdout.on('data', (inv) => {
