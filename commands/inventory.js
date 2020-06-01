@@ -14,13 +14,17 @@ exports.run = (args, message, bot, cmds, cluster) => {
     const pythonProcess = spawn('python',["./commands/inventory.py", userid]);
     pythonProcess.stdout.on('data', (inv) => {
 
-        const inventory = cluster.db('plexi_users').collection(userid).findOne();
-        //const player = db.collection(userid);
-        //const dependancies = db.collection("Dependancies")
-        //const inventory = player.findOne();
-        //const userList = dependancies.findOne({_id: "UserList"});
+        const db = cluster.db('plexi_users')
+        const player = db.collection(userid);
+        const dependancies = db.collection("Dependancies")
+        const inventory = player.findOne();
+        const userList = dependancies.findOne({_id: "UserList"});
 
-        //console.log(Object.values(userList));
+        player.find({id: 'inventory'}).toArray((err, items) => {
+            console.log(items)
+          })
+
+        console.log(Object.values(userList));
 
         console.log(Object.values(inventory));
 
