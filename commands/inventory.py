@@ -9,27 +9,27 @@ id = str(sys.argv[1])
 
 cluster = mongo(os.environ["MONGOLAB_URL"])  #Same as process.env.MONGO_URL
 
-db = cluster['plexi_users']
+'''db = cluster['plexi_users']
 player = db[str(id)]
-dependancies = db['Dependancies']
+dependancies = db['Dependancies']'''
 
-'''containers = cluster['Main']
+containers = cluster['Containers']
 inventories = db["Inventories"]
 
 dependancies = cluster['Dependancies']
-injectors = dependancies["Injectors"]'''
+injectors = dependancies["Injectors"]
 
 inventory = {}
 
-userList = dependancies.find_one({"_id":"UserList"})
+userList = injectors.find_one({"_id":"UserList"})
 if userList == None:
-	dependancies.insert_one({"_id": "UserList"})
-	userList = dependancies.find_one({"_id":"UserList"})
+	injectors.insert_one({"_id": "UserList"})
+	userList = injectors.find_one({"_id":"UserList"})
 if id in userList:
 	pre_existance = True
 else:
 	pre_existance = False
-	dependancies.update_one(
+	injectors.update_one(
 		{"_id": "UserList"},
 		{
 			"$set": {str(id): None}
@@ -39,7 +39,7 @@ else:
 
 if pre_existance == True:
 
-	data = player.find_one({"_id": "inventory"})
+	data = inventories.find_one({"_id": id})
 	isEmpty = data["isEmpty"]
 	'''isEmpty = "True"
 	for slot in data:
@@ -59,14 +59,14 @@ if pre_existance == True:
 		inventory["torso"] = data["torso"]
 		inventory["shoe"] = data["shoe"]
 		inventory["isEmpty"] = "False"
-		dependancies.replace_one(
+		injectors.replace_one(
 			{"_id": "inventory"}, 
 			{ "$set": inventory}
 		)
 			
 				
 	else:
-		inv = dependancies.update_one(
+		inv = injectors.update_one(
 			{"_id": "inventory"},
 			{"$set": {
 				"ID": id,
@@ -87,8 +87,8 @@ else:
 	inventory["torso"] = None
 	inventory["shoe"] = None
 	inventory["isEmpty"] = True
-	player.insert_one(inventory)
-	dependancies.replace_one(
+	inventories.insert_one(inventory)
+	injectors.replace_one(
 		{"_id": "inventory"},
 		inventory
 	)
