@@ -14,14 +14,12 @@ exports.run = (args, message, bot, cmds, cluster) => {
     const pythonProcess = spawn('python',["./commands/inventory.py", userid]);
     pythonProcess.stdout.on('data', (inv) => {
 
-        console.log(inv);
         const db = cluster.db('plexi_users')
         const player = db.collection(userid);
         const dependancies = db.collection("Dependancies")
         
         const inventory = player.findOne({'_id': 'inventory'})
-        player.find({'_id': 'inventory'}).toArray((err, items) => {console.log(items);console.log(inventory);
-            console.log(inventory.isEmpty[0]);});
+        player.find({'_id': 'inventory'}).toArray((err, items) => {console.log(items)});
         const userList = dependancies.findOne({_id: "UserList"});
 
         /*player.find({'_id': 'inventory'}).toArray((err, items) => {   
@@ -31,7 +29,7 @@ exports.run = (args, message, bot, cmds, cluster) => {
         console.log(Object.values(userList));*/
 
         console.log(inventory);
-        console.log(inventory.isEmpty[0])
+        console.log(inventory.isEmpty)
 
         const inventoryembed = new Discord.RichEmbed()
         .setTitle(`${message.author.username}'s Inventory`)
