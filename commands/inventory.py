@@ -32,7 +32,7 @@ else:
 	injectors.update_one(
 		{"_id": "UserList"},
 		{
-			"$set": {str(id): None}
+			"$set": {str(id): None}}
 		},
 		upsert=True
 	) 
