@@ -37,7 +37,11 @@ else:
 		upsert=True
 	) 
 
-if pre_existance == True:
+result = 0
+print(result)
+sys.stdout.flush()
+
+'''if pre_existance == True:
 
 	data = inventories.find_one({"_id": id})
 	isEmpty = data["isEmpty"]
@@ -90,9 +94,9 @@ else:
 	inventories.insert_one(inventory)
 	injectors.replace_one(
 		{"_id": "inventory"},
-		inventory
+		{ "$set": inventory} 
 	)
 
 result = 0
 print(result)
-sys.stdout.flush()
+sys.stdout.flush()'''
