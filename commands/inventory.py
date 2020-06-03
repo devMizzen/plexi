@@ -45,11 +45,7 @@ sys.stdout.flush()
 
 	data = inventories.find_one({"_id": id})
 	isEmpty = data["isEmpty"]
-	'''isEmpty = "True"
-	for slot in data:
-		if (data[slot] != "--"):
-			if slot != "isEmpty" or slot != "_id":
-				isEmpty = "False"'''
+	
 					
 	if isEmpty == False:
 		
