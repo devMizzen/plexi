@@ -7,29 +7,29 @@ from pymongo import MongoClient as mongo
 
 id = str(sys.argv[1])
 
-cluster = mongo(os.environ["MONGOLAB_URL"])  #Same as process.env.MONGO_URL
+cluster = mongo(os.environ["MONGOLAB_URL"]  #Same as process.env.MONGO_URL
 
-db = cluster['plexi_users']
+'''db = cluster['plexi_users']
 player = db[str(id)]
-dependancies = db['Dependancies']
+dependancies = db['Dependancies']'''
 
-'''containers = cluster['Main']
-inventories = db["Inventories"]
+containers = cluster['Containers']
+inventories = containers["Inventories"]
 
 dependancies = cluster['Dependancies']
-injectors = dependancies["Injectors"]'''
+injectors = dependancies["Injectors"]
 
 inventory = {}
 
-userList = dependancies.find_one({"_id":"UserList"})
+userList = injectors.find_one({"_id":"UserList"})
 if userList == None:
-	dependancies.insert_one({"_id": "UserList"})
-	userList = dependancies.find_one({"_id":"UserList"})
+	injectors.insert_one({"_id": "UserList"})
+	userList = injectors.find_one({"_id":"UserList"})
 if id in userList:
 	pre_existance = True
 else:
 	pre_existance = False
-	dependancies.update_one(
+	injectors.update_one(
 		{"_id": "UserList"},
 		{
 			"$set": {str(id): None}
@@ -39,17 +39,13 @@ else:
 
 if pre_existance == True:
 
-	data = player.find_one({"_id": "inventory"})
+	data = inventories.find_one({"_id": id})
 	isEmpty = data["isEmpty"]
-	'''isEmpty = "True"
-	for slot in data:
-		if (data[slot] != "--"):
-			if slot != "isEmpty" or slot != "_id":
-				isEmpty = "False"'''
+	
 					
 	if isEmpty == False:
 		
-		inventory["_id"] = "inventory"
+		inventory["_id"] = id
 		inventory["lh"] = data["lh"]
 		for i in range(32):
 			slotNo = "slot"+ str(i+1)
@@ -59,17 +55,16 @@ if pre_existance == True:
 		inventory["torso"] = data["torso"]
 		inventory["shoe"] = data["shoe"]
 		inventory["isEmpty"] = "False"
-		dependancies.replace_one(
-			{"_id": "inventory"}, 
-			{ "$set": inventory}
-		)
+		'''injectors.replace_one(
+			{"_id": "tempInventory"}, 
+			inventory
+		)'''
 			
 				
 	else:
-		inv = dependancies.update_one(
+		inv = injectors.update_one(
 			{"_id": "inventory"},
 			{"$set": {
-				"ID": id,
 				"isEmpty": True
 				}
 			}
@@ -77,7 +72,7 @@ if pre_existance == True:
 			#print(result)
 			#sys.stdout.flush()
 else:	
-	inventory["_id"] = "inventory"
+	inventory["_id"] = id
 	inventory["lh"] = None
 	for i in range(32):
 		slotNo = "slot"+ str(i+1)
@@ -87,11 +82,11 @@ else:
 	inventory["torso"] = None
 	inventory["shoe"] = None
 	inventory["isEmpty"] = True
-	player.insert_one(inventory)
-	dependancies.replace_one(
-		{"_id": "inventory"},
-		inventory
-	)
+	inventories.insert_one(inventory)
+	'''injectors.replace_one(
+		{"_id": "tempInventory"},
+		inventory 
+	)'''
 
 result = 0
 print(result)
