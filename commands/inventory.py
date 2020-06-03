@@ -49,7 +49,7 @@ if pre_existance == True:
 					
 	if isEmpty == False:
 		
-		inventory["_id"] = "inventory"
+		inventory["_id"] = id
 		inventory["lh"] = data["lh"]
 		for i in range(32):
 			slotNo = "slot"+ str(i+1)
@@ -77,7 +77,7 @@ if pre_existance == True:
 			#print(result)
 			#sys.stdout.flush()
 else:	
-	inventory["_id"] = "inventory"
+	inventory["_id"] = id
 	inventory["lh"] = None
 	for i in range(32):
 		slotNo = "slot"+ str(i+1)
