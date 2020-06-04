@@ -57,7 +57,7 @@ else:
 	pre_existance = False
 	values.update_one(
 		{"_id": "UserList"},
-		{"$set": id: None}},
+		{"$set": {id: None}},
 		upsert=True
 	) 
 
