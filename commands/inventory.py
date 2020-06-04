@@ -9,7 +9,7 @@ from pymongo import MongoClient as mongo
 
 
 async def log(ctx, dataType, data):
-
+	slotCtr = 0
 	color = 0x00ff00
 	if dataType == "dict":
 		emb = discord.Embed(title = "Your Inventory:", description="All stuff present in your inventory will be shown here:", color=color)
@@ -19,14 +19,19 @@ async def log(ctx, dataType, data):
 			if key == "lh":
 				name = "Left hand"
 			elif "slot" in key:
-				name = "Slot "+key[-1]
+				slotCtr += 1
+				if slotCtr >= 10:
+					name = "Slot "+ key[-2]+key[-1]
+				else:
+					name = "Slot "+key[-1]
+				
 			else:
 				name = key
 
 			emb.add_field(name=name,value=data[key])
 
 	elif dataType == "text":
-		emb = discord.Embed(title = "Your Inventory:", description=text, color=color)
+		emb = discord.Embed(title = "Your Inventory:", description=data, color=color)
 		
 	await ctx.send(embed=emb)
 
