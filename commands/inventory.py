@@ -12,48 +12,6 @@ token = os.environ["token"]
 
 bot = commands.Bot(command_prefix='/')
 
-async def log(id, dataType, data):
-	slotCtr = 0
-	color = 0x00ff00
-	if dataType == "dict":
-		emb = discord.Embed(title = "Your Inventory:", description="All stuff present in your inventory will be shown here:", color=color)
-		for key in data:
-			if key in ("_id", "isEmpty"):
-				continue
-			if key == "lh":
-				name = "Left hand"
-			elif "slot" in key:
-				slotCtr += 1
-				if slotCtr >= 10:
-					name = "Slot "+ key[-2]+key[-1]
-				else:
-					name = "Slot "+key[-1]
-				
-			else:
-				name = key
-
-			emb.add_field(name=name,value=data[key])
-
-	elif dataType == "text":
-		emb = discord.Embed(title = "Your Inventory:", description=data, color=color)
-
-	user = bot.fetch_user(int(id))
-
-	#await user.send("h")
-	
-	dmChannel = user.dm_channel()
-	if dmChannel == None:
-		dmChannel = user.create_dm()
-	await dmChannel.send(embed=emb)
-
-	result = 0
-	print(result)
-	sys.stdout.flush()
-
-
-	#ctx.send(embed=emb)
-
-
 @bot.event
 async def on_ready():
 	cluster = mongo(os.environ["MONGOLAB_URL"])  #Same as process.env.MONGO_URL
@@ -111,5 +69,46 @@ async def on_ready():
 		inventories.insert_one(inventory)
 		msg = "Your inventory is empty."
 		log(id, "text", msg)
+
+async def log(id, dataType, data):
+	slotCtr = 0
+	color = 0x00ff00
+	if dataType == "dict":
+		emb = discord.Embed(title = "Your Inventory:", description="All stuff present in your inventory will be shown here:", color=color)
+		for key in data:
+			if key in ("_id", "isEmpty"):
+				continue
+			if key == "lh":
+				name = "Left hand"
+			elif "slot" in key:
+				slotCtr += 1
+				if slotCtr >= 10:
+					name = "Slot "+ key[-2]+key[-1]
+				else:
+					name = "Slot "+key[-1]
+				
+			else:
+				name = key
+
+			emb.add_field(name=name,value=data[key])
+
+	elif dataType == "text":
+		emb = discord.Embed(title = "Your Inventory:", description=data, color=color)
+
+	user = bot.fetch_user(int(id))
+
+	#await user.send("h")
+	
+	dmChannel = user.dm_channel()
+	if dmChannel == None:
+		dmChannel = user.create_dm()
+	await dmChannel.send(embed=emb)
+
+	result = 0
+	print(result)
+	sys.stdout.flush()
+
+
+	#ctx.send(embed=emb)
 
 bot.run(token)
