@@ -5,10 +5,14 @@ import pymongo
 import discord
 
 from discord.utils import get
+from discord.ext import commands
 from pymongo import MongoClient as mongo
 
+token = os.environ["token"]
+bot = commands.Bot()
+bot.run(token)
 
-'''await def log(client, dataType, data):
+await def log(client, dataType, data):
 	
 	slotCtr = 0
 	color = 0x00ff00
@@ -35,7 +39,7 @@ from pymongo import MongoClient as mongo
 		emb = discord.Embed(title = "Your Inventory:", description=data, color=color)
 	
 
-	user = client.get_user(int(id))
+	user = bot.get_user(int(id))
 	
 	dmChannel = user.dm_channel()
 	if dmChannel = None:
@@ -52,14 +56,9 @@ inventories = containers["Inventories"]
 dependancies = cluster['Dependancies']
 values = dependancies["Values"]
 
-ctx = sys.argv[1]
-id = str(sys.argv[2])
+id = str(sys.argv[1])
 
 inventory = {}
-
-result = 0
-print(result)
-sys.stdout.flush()'''
 
 userList = values.find_one({"_id":"UserList"})
 if userList == None:
@@ -104,4 +103,3 @@ else:
 	inventories.insert_one(inventory)
 
 	log(ctx, "dict", inventory)
-'''
