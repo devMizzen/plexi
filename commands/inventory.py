@@ -61,7 +61,33 @@ async def on_ready(bot):
 
 		else:
 			msg = "Your inventory is empty."
-			log(bot, id, "text", msg)
+			slotCtr = 0
+			color = 0x00ff00
+			if dataType == "dict":
+				emb = discord.Embed(title = "Your Inventory:", description="All stuff present in your inventory will be shown here:", color=color)
+				for key in data:
+					if key in ("_id", "isEmpty"):
+						continue
+					if key == "lh":
+						name = "Left hand"
+					elif "slot" in key:
+						slotCtr += 1
+						if slotCtr >= 10:
+							name = "Slot "+ key[-2]+key[-1]
+						else:
+							name = "Slot "+key[-1]
+
+					else:
+						name = key
+
+					emb.add_field(name=name,value=data[key])
+
+			elif dataType == "text":
+				emb = discord.Embed(title = "Your Inventory:", description=data, color=color)
+
+			result = 0
+			print(result)
+			sys.stdout.flush()
 				#print(result)
 				#sys.stdout.flush()
 	else:	
