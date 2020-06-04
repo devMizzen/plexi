@@ -34,10 +34,13 @@ async def log(client, dataType, data):
 		emb = discord.Embed(title = "Your Inventory:", description=data, color=color)
 	
 	user = client.get_user(int(id))
-	dmChannel = user.dm_channel()
+	result = 0
+	print(result)
+	sys.stdout.flush()
+	'''dmChannel = user.dm_channel()
 	if dmChannel = None:
 		dmChannel = user.create_dm()
-	dmChannel.send(embed=emb)
+	dmChannel.send(embed=emb)'''
 
 	#ctx.send(embed=emb)
 
@@ -104,6 +107,3 @@ else:
 	
 	log(ctx, "dict", inventory)
 
-result = 0
-print(result)
-sys.stdout.flush()
