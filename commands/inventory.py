@@ -23,16 +23,21 @@ async def on_ready(bot):
 	values = dependancies["Values"]
 
 	id = str(sys.argv[1])
-
+	
+	
 	user = bot.fetch_user(int(id))
 
-	await user.send("h")
+	'''await user.send("h")
 	
 	dmChannel = user.dm_channel()
 	if dmChannel == None:
 		dmChannel = user.create_dm()
 	await dmChannel.send(embed=emb)
 
+	result = 0
+	print(result)
+	sys.stdout.flush()
+	
 	inventory = {}
 
 	userList = values.find_one({"_id":"UserList"})
@@ -137,6 +142,6 @@ async def log(bot, id, dataType, data):
 	sys.stdout.flush()
 
 
-	#ctx.send(embed=emb)
+	#ctx.send(embed=emb)'''
 
 bot.run(token)
