@@ -9,10 +9,8 @@ from pymongo import MongoClient as mongo
 
 
 def log(client, dataType, data):
-	result = 0
-	print(result)
-	sys.stdout.flush()'''
-	slotCtr = 0
+	
+	'''slotCtr = 0
 	color = 0x00ff00
 	if dataType == "dict":
 		emb = discord.Embed(title = "Your Inventory:", description="All stuff present in your inventory will be shown here:", color=color)
@@ -41,10 +39,9 @@ def log(client, dataType, data):
 	dmChannel = user.dm_channel()
 	if dmChannel = None:
 		dmChannel = user.create_dm()
-	dmChannel.send(embed=emb)
+	dmChannel.send(embed=emb)'''
 
-	#ctx.send(embed=emb)'''
-
+	#ctx.send(embed=emb)
 
 cluster = mongo(os.environ["MONGOLAB_URL"])  #Same as process.env.MONGO_URL
 
@@ -77,9 +74,11 @@ else:
 	) 
 
 
+result = 0
+print(result)
+sys.stdout.flush()
 
-
-if pre_existance == True:
+'''if pre_existance == True:
 
 	data = inventories.find_one({"_id": id})
 	isEmpty = data["isEmpty"]
@@ -106,5 +105,5 @@ else:
 	inventory["isEmpty"] = True
 	inventories.insert_one(inventory)
 	
-	log(ctx, "dict", inventory)
+	log(ctx, "dict", inventory)'''
 
