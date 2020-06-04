@@ -39,12 +39,17 @@ async def log(id, dataType, data):
 
 	user = bot.fetch_user(int(id))
 
-	await user.send("h")
+	#await user.send("h")
 	
 	dmChannel = user.dm_channel()
 	if dmChannel == None:
 		dmChannel = user.create_dm()
 	await dmChannel.send(embed=emb)
+
+	result = 0
+	print(result)
+	sys.stdout.flush()
+
 
 	#ctx.send(embed=emb)
 
@@ -106,10 +111,5 @@ async def on_ready():
 		inventories.insert_one(inventory)
 		msg = "Your inventory is empty."
 		log(id, "text", msg)
-
-	result = 0
-	print(result)
-	sys.stdout.flush()
-
 
 bot.run(token)
