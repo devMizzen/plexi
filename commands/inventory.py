@@ -7,7 +7,7 @@ import discord
 from pymongo import MongoClient as mongo
 
 
-def log(ctx, dataType, data):
+async def log(ctx, dataType, data):
 	color = 0x00ff00
 	if dataType == "dict":
 		emb = discord.Embed(title = "Your Inventory:", description="All stuff present in your inventory will be shown here:", color=color)
@@ -26,7 +26,7 @@ def log(ctx, dataType, data):
 	elif dataType == "text":
 		emb = discord.Embed(title = "Your Inventory:", description=text, color=color)
 		
-	ctx.send(embed=emb)
+	await ctx.send(embed=emb)
 
 
 cluster = mongo(os.environ["MONGOLAB_URL"])  #Same as process.env.MONGO_URL
