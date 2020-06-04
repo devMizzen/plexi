@@ -8,7 +8,7 @@ from discord.utils import get
 from pymongo import MongoClient as mongo
 
 
-async def log(id, dataType, data):
+async def log(ctx, dataType, data):
 	slotCtr = 0
 	color = 0x00ff00
 	if dataType == "dict":
@@ -33,11 +33,13 @@ async def log(id, dataType, data):
 	elif dataType == "text":
 		emb = discord.Embed(title = "Your Inventory:", description=data, color=color)
 	
-	user = discord.Client.get_user(int(id))
+	'''user = discord.Client.get_user(int(id))
 	dmChannel = user.dm_channel()
 	if dmChannel = None:
 		dmChannel = user.create_dm()
-	dmChannel.send(embed=emb)
+	dmChannel.send(embed=emb)'''
+
+	ctx.send(embed=emb)
 
 
 cluster = mongo(os.environ["MONGOLAB_URL"])  #Same as process.env.MONGO_URL
@@ -48,7 +50,8 @@ inventories = containers["Inventories"]
 dependancies = cluster['Dependancies']
 values = dependancies["Values"]
 
-id = str(sys.argv[1])
+ctx = sys.argv[1]
+id = str(sys.argv[2])
 
 inventory = {}
 
@@ -79,11 +82,11 @@ if pre_existance == True:
 					
 	if isEmpty == False:
 		
-		log(id, "dict", data)
+		log(ctx, "dict", data)
 				
 	else:
 		msg = "Your inventory is empty."
-		log(id, "text", msg)
+		log(ctx, "text", msg)
 			#print(result)
 			#sys.stdout.flush()
 else:	
@@ -99,7 +102,7 @@ else:
 	inventory["isEmpty"] = True
 	inventories.insert_one(inventory)
 	
-	log(id, "dict", inventory)
+	log(ctx, "dict", inventory)
 
 result = 0
 print(result)
