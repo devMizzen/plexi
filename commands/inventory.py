@@ -44,8 +44,12 @@ id = str(sys.argv[2])
 
 inventory = {}
 
+result = 0
+print(result)
+sys.stdout.flush()
 
-userList = values.find_one({"_id":"UserList"})
+
+'''userList = values.find_one({"_id":"UserList"})
 if userList == None:
 	values.insert_one({"_id": "UserList"})
 	userList = values.find_one({"_id":"UserList"})
@@ -57,10 +61,9 @@ else:
 		{"_id": "UserList"},
 		{"$set": id: None}},
 		upsert=True
-	) 
+	) '''
 
-print(1)
-sys.stdout.flush()
+
 
 '''
 if pre_existance == True:
