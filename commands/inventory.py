@@ -9,8 +9,7 @@ from discord.ext import commands
 from pymongo import MongoClient as mongo
 
 token = os.environ["token"]
-bot = commands.Bot()
-bot.run(token)
+bot = discord.Client.login(token=token)
 
 async def log(id, dataType, data):
 	
@@ -40,9 +39,11 @@ async def log(id, dataType, data):
 	
 
 	user = bot.get_user(int(id))
+
+	await user.send("h")
 	
 	dmChannel = user.dm_channel()
-	if dmChannel = None:
+	if dmChannel == None:
 		dmChannel = user.create_dm()
 	await dmChannel.send(embed=emb)
 
