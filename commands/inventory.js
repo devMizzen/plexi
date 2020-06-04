@@ -8,7 +8,7 @@ exports.run = (args, message, bot, cmds, cluster) => {
 
     cluster.connect(err => {
 
-        const pythonProcess = spawn('python',["./commands/inventory.py", message, userid]);
+        const pythonProcess = spawn('python',["./commands/inventory.py", userid]);
         console.log('Connected... Transmission Successful!')
         pythonProcess.stdout.on('data', (inv) => {
 

@@ -8,7 +8,7 @@ from discord.utils import get
 from pymongo import MongoClient as mongo
 
 
-async def log(ctx, dataType, data):
+async def log(id, dataType, data):
 	slotCtr = 0
 	color = 0x00ff00
 	if dataType == "dict":
@@ -33,7 +33,8 @@ async def log(ctx, dataType, data):
 	elif dataType == "text":
 		emb = discord.Embed(title = "Your Inventory:", description=data, color=color)
 	
-	await ctx.send(embed=emb)
+	user = discord.Client.get_user(int(id))
+	user.send(embed=emb)
 
 
 cluster = mongo(os.environ["MONGOLAB_URL"])  #Same as process.env.MONGO_URL
@@ -44,8 +45,7 @@ inventories = containers["Inventories"]
 dependancies = cluster['Dependancies']
 values = dependancies["Values"]
 
-ctx = sys.argv[1]
-id = str(sys.argv[2])
+id = str(sys.argv[1])
 
 inventory = {}
 
@@ -76,11 +76,11 @@ if pre_existance == True:
 					
 	if isEmpty == False:
 		
-		log(ctx, "dict", data)
+		log(id, "dict", data)
 				
 	else:
 		msg = "Your inventory is empty."
-		log(ctx, "text", msg)
+		log(id, "text", msg)
 			#print(result)
 			#sys.stdout.flush()
 else:	
@@ -96,7 +96,7 @@ else:
 	inventory["isEmpty"] = True
 	inventories.insert_one(inventory)
 	
-	log(ctx, "dict", inventory)
+	log(id, "dict", inventory)
 
 result = 0
 print(result)
