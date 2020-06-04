@@ -39,14 +39,16 @@ inventories = containers["Inventories"]
 dependancies = cluster['Dependancies']
 values = dependancies["Values"]
 
-ctx = sys.argv[1]
-id = str(sys.argv[2])
-
-inventory = {}
-
 result = 0
 print(result)
 sys.stdout.flush()
+
+'''ctx = sys.argv[1]
+id = str(sys.argv[2])
+
+inventory = {}'''
+
+
 
 
 '''userList = values.find_one({"_id":"UserList"})
