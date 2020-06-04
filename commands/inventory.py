@@ -9,7 +9,8 @@ from discord.ext import commands
 from pymongo import MongoClient as mongo
 
 token = os.environ["token"]
-bot = discord.Client.run(token)
+
+bot = commands.Bot(command_prefix='/')
 
 '''
 
@@ -106,6 +107,10 @@ else:
 	msg = "Your inventory is empty."
 	log(bot, id, "text", msg)
 '''
-result = 0
-print(result)
-sys.stdout.flush()
+@bot.event
+async def on_ready():
+	result = 0
+	print(result)
+	sys.stdout.flush()	
+
+bot.run(token)
