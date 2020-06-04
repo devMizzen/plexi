@@ -9,6 +9,9 @@ from pymongo import MongoClient as mongo
 
 
 async def log(client, dataType, data):
+	result = 0
+	print(result)
+	sys.stdout.flush()'''
 	slotCtr = 0
 	color = 0x00ff00
 	if dataType == "dict":
@@ -32,19 +35,15 @@ async def log(client, dataType, data):
 
 	elif dataType == "text":
 		emb = discord.Embed(title = "Your Inventory:", description=data, color=color)
-	
 
-	result = 0
-	print(result)
-	sys.stdout.flush()
-	#user = client.get_user(int(id))
+	user = client.get_user(int(id))
 	
-	'''dmChannel = user.dm_channel()
+	dmChannel = user.dm_channel()
 	if dmChannel = None:
 		dmChannel = user.create_dm()
-	dmChannel.send(embed=emb)'''
+	dmChannel.send(embed=emb)
 
-	#ctx.send(embed=emb)
+	#ctx.send(embed=emb)'''
 
 
 cluster = mongo(os.environ["MONGOLAB_URL"])  #Same as process.env.MONGO_URL
