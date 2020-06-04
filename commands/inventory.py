@@ -8,7 +8,7 @@ from discord.utils import get
 from pymongo import MongoClient as mongo
 
 
-async def log(ctx, dataType, data):
+'''async def log(ctx, dataType, data):
 
 	color = 0x00ff00
 	if dataType == "dict":
@@ -28,7 +28,7 @@ async def log(ctx, dataType, data):
 	elif dataType == "text":
 		emb = discord.Embed(title = "Your Inventory:", description=text, color=color)
 		
-	await ctx.send(embed=emb)
+	await ctx.send(embed=emb)'''
 
 
 cluster = mongo(os.environ["MONGOLAB_URL"])  #Same as process.env.MONGO_URL
@@ -64,7 +64,7 @@ else:
 
 
 
-if pre_existance == True:
+'''if pre_existance == True:
 
 	data = inventories.find_one({"_id": id})
 	isEmpty = data["isEmpty"]
@@ -91,7 +91,7 @@ else:
 	inventory["isEmpty"] = True
 	inventories.insert_one(inventory)
 	
-	log(ctx, "dict", inventory)
+	log(ctx, "dict", inventory)'''
 
 result = 0
 print(result)
