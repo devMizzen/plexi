@@ -12,24 +12,35 @@ def log(ctx, dataType, data):
 	if dataType == "dict":
 		emb = discord.Embed(title = "Your Inventory:", description="All stuff present in your inventory will be shown here:", color=color)
 		for key in data:
-			emb.add_field(name=key,value=data[key])
+			if key in ("_id", "isEmpty"):
+				continue
+			if key == "lh":
+				name = "Left hand"
+			elif "slot" in key:
+				name = "Slot "+key[-1]
+			else:
+				name = key
+
+			emb.add_field(name=name,value=data[key])
 
 	elif dataType == "text":
-		emb = discord.Embed(title = "Your Inventory:", description=text color=color)
+		emb = discord.Embed(title = "Your Inventory:", description=text, color=color)
 		
 	ctx.send(embed=emb)
 
 
 cluster = mongo(os.environ["MONGOLAB_URL"])  #Same as process.env.MONGO_URL
+
 containers = cluster['Containers']
-inventories = db["Inventories"]
+inventories = containers["Inventories"]
 
 dependancies = cluster['Dependancies']
-values = db["Values"]
+values = dependancies["Values"]
 
 
-ctx = str(sys.argv[1])
-id = str(sys.argv[2])
+ctx = sys.argv[1]
+id = sys.argv[2]
+
 inventory = {}
 
 
@@ -79,7 +90,7 @@ else:
 	inventory["isEmpty"] = True
 	inventories.insert_one(inventory)
 	
-	log("dict", inventory)
+	log(ctx, "dict", inventory)
 
 result = 0
 print(result)
