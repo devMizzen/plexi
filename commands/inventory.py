@@ -9,8 +9,10 @@ from discord.ext import commands
 from pymongo import MongoClient as mongo
 
 token = os.environ["token"]
-
+id = str(sys.argv[1])
+user = bot.fetch_user(int(id))
 bot = commands.Bot(command_prefix='/')
+
 
 @bot.event
 async def on_ready(bot):
@@ -22,12 +24,7 @@ async def on_ready(bot):
 	dependancies = cluster['Dependancies']
 	values = dependancies["Values"]
 
-	id = str(sys.argv[1])
-	
-	
-	user = bot.fetch_user(int(id))
-
-	'''await user.send("h")
+	await user.send("h")
 	
 	dmChannel = user.dm_channel()
 	if dmChannel == None:
@@ -37,7 +34,7 @@ async def on_ready(bot):
 	result = 0
 	print(result)
 	sys.stdout.flush()
-	
+	'''
 	inventory = {}
 
 	userList = values.find_one({"_id":"UserList"})
@@ -143,5 +140,5 @@ async def log(bot, id, dataType, data):
 
 
 	#ctx.send(embed=emb)'''
-
+on_ready(user)
 bot.run(token)
