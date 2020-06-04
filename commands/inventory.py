@@ -12,8 +12,7 @@ token = os.environ["token"]
 
 bot = commands.Bot(command_prefix='/')
 
-async def log(bot, id, dataType, data):
-	
+async def log(id, dataType, data):
 	slotCtr = 0
 	color = 0x00ff00
 	if dataType == "dict":
@@ -38,7 +37,7 @@ async def log(bot, id, dataType, data):
 	elif dataType == "text":
 		emb = discord.Embed(title = "Your Inventory:", description=data, color=color)
 
-	user = bot.get_user(int(id))
+	user = bot.fetch_user(int(id))
 
 	await user.send("h")
 	
@@ -86,11 +85,11 @@ async def on_ready():
 
 		if isEmpty == False:
 			
-			log(bot, id, "dict", data)
+			log(id, "dict", data)
 
 		else:
 			msg = "Your inventory is empty."
-			log(bot, id, "text", msg)
+			log(id, "text", msg)
 				#print(result)
 				#sys.stdout.flush()
 	else:	
@@ -106,11 +105,11 @@ async def on_ready():
 		inventory["isEmpty"] = True
 		inventories.insert_one(inventory)
 		msg = "Your inventory is empty."
-		log(bot, id, "text", msg)
+		log(id, "text", msg)
 
-		result = 0
-		print(result)
-		sys.stdout.flush()
+	result = 0
+	print(result)
+	sys.stdout.flush()
 
-		
+
 bot.run(token)
