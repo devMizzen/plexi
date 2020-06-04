@@ -8,13 +8,10 @@ from discord.utils import get
 from pymongo import MongoClient as mongo
 
 
-await def log(client, dataType, data):
+'''await def log(client, dataType, data):
 	
 	slotCtr = 0
 	color = 0x00ff00
-	result = 0
-	print(result)
-	sys.stdout.flush()'''
 	if dataType == "dict":
 		emb = discord.Embed(title = "Your Inventory:", description="All stuff present in your inventory will be shown here:", color=color)
 		for key in data:
@@ -60,8 +57,9 @@ id = str(sys.argv[2])
 
 inventory = {}
 
-
-
+result = 0
+print(result)
+sys.stdout.flush()'''
 
 userList = values.find_one({"_id":"UserList"})
 if userList == None:
@@ -106,4 +104,4 @@ else:
 	inventories.insert_one(inventory)
 
 	log(ctx, "dict", inventory)
-
+'''
