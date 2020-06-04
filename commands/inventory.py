@@ -9,7 +9,7 @@ from discord.ext import commands
 from pymongo import MongoClient as mongo
 
 token = os.environ["token"]
-bot = discord.Client.login(token=token)
+bot = discord.Client.run(token)
 
 '''
 
