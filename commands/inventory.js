@@ -13,6 +13,7 @@ exports.run = (args, message, bot, cmds, cluster) => {
         pythonProcess.stdout.on('data', (inv) => {
 
             console.log('Received Data... inventory.py Check!')
+            
             const inventoryembed = new Discord.RichEmbed()
             .setTitle(`${message.author.username}'s Inventory`)
             .setDescription("For the sake of privacy of your inventory, it has been sent to your direct messages.")
