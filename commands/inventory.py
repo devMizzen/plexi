@@ -12,8 +12,6 @@ token = os.environ["token"]
 
 bot = commands.Bot(command_prefix='/')
 
-'''
-
 async def log(bot, id, dataType, data):
 	
 	slotCtr = 0
@@ -49,68 +47,70 @@ async def log(bot, id, dataType, data):
 		dmChannel = user.create_dm()
 	await dmChannel.send(embed=emb)
 
-	#ctx.send(embed=emb)'''
-
-'''cluster = mongo(os.environ["MONGOLAB_URL"])  #Same as process.env.MONGO_URL
-
-containers = cluster['Containers']
-inventories = containers["Inventories"]
-
-dependancies = cluster['Dependancies']
-values = dependancies["Values"]
-
-id = str(sys.argv[1])
-
-inventory = {}
-
-userList = values.find_one({"_id":"UserList"})
-if userList == None:
-	values.insert_one({"_id": "UserList"})
-	userList = values.find_one({"_id":"UserList"})
-if id in userList:
-	pre_existance = True
-else:
-	pre_existance = False
-	values.update_one(
-		{"_id": "UserList"},
-		{"$set": {id: None}},
-		upsert=True
-	) 
+	#ctx.send(embed=emb)
 
 
-if pre_existance == True:
-
-	data = inventories.find_one({"_id": id})
-	isEmpty = data["isEmpty"]
-					
-	if isEmpty == False:
-		
-		log(bot, id, "dict", data)
-				
-	else:
-		msg = "Your inventory is empty."
-		log(bot, id, "text", msg)
-			#print(result)
-			#sys.stdout.flush()
-else:	
-	inventory["_id"] = id
-	inventory["lh"] = None
-	for i in range(32):
-		slotNo = "slot"+ str(i+1)
-		inventory[slotNo] = None
-	inventory["head"] = None
-	inventory["chest"] = None
-	inventory["torso"] = None
-	inventory["shoe"] = None
-	inventory["isEmpty"] = True
-	inventories.insert_one(inventory)
-	msg = "Your inventory is empty."
-	log(bot, id, "text", msg)
-'''
 @bot.event
 async def on_ready():
-	result = 0
-	print(result)
-	sys.stdout.flush()	
+	cluster = mongo(os.environ["MONGOLAB_URL"])  #Same as process.env.MONGO_URL
 
+	containers = cluster['Containers']
+	inventories = containers["Inventories"]
+
+	dependancies = cluster['Dependancies']
+	values = dependancies["Values"]
+
+	id = str(sys.argv[1])
+
+	inventory = {}
+
+	userList = values.find_one({"_id":"UserList"})
+	if userList == None:
+		values.insert_one({"_id": "UserList"})
+		userList = values.find_one({"_id":"UserList"})
+	if id in userList:
+		pre_existance = True
+	else:
+		pre_existance = False
+		values.update_one(
+			{"_id": "UserList"},
+			{"$set": {id: None}},
+			upsert=True
+		) 
+
+
+	if pre_existance == True:
+
+		data = inventories.find_one({"_id": id})
+		isEmpty = data["isEmpty"]
+
+		if isEmpty == False:
+			
+			log(bot, id, "dict", data)
+
+		else:
+			msg = "Your inventory is empty."
+			log(bot, id, "text", msg)
+				#print(result)
+				#sys.stdout.flush()
+	else:	
+		inventory["_id"] = id
+		inventory["lh"] = None
+		for i in range(32):
+			slotNo = "slot"+ str(i+1)
+			inventory[slotNo] = None
+		inventory["head"] = None
+		inventory["chest"] = None
+		inventory["torso"] = None
+		inventory["shoe"] = None
+		inventory["isEmpty"] = True
+		inventories.insert_one(inventory)
+		msg = "Your inventory is empty."
+		log(bot, id, "text", msg)
+
+		result = 0
+		print(result)
+		sys.stdout.flush()
+
+		
 bot.run(token)
