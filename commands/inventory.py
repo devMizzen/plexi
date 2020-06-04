@@ -12,6 +12,9 @@ await def log(client, dataType, data):
 	
 	slotCtr = 0
 	color = 0x00ff00
+	result = 0
+	print(result)
+	sys.stdout.flush()'''
 	if dataType == "dict":
 		emb = discord.Embed(title = "Your Inventory:", description="All stuff present in your inventory will be shown here:", color=color)
 		for key in data:
@@ -34,11 +37,8 @@ await def log(client, dataType, data):
 	elif dataType == "text":
 		emb = discord.Embed(title = "Your Inventory:", description=data, color=color)
 	
-	result = 0
-	print(result)
-	sys.stdout.flush()
 
-	'''user = client.get_user(int(id))
+	user = client.get_user(int(id))
 	
 	dmChannel = user.dm_channel()
 	if dmChannel = None:
