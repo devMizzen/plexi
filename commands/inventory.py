@@ -8,7 +8,7 @@ from discord.utils import get
 from pymongo import MongoClient as mongo
 
 
-'''async def log(ctx, dataType, data):
+async def log(ctx, dataType, data):
 
 	color = 0x00ff00
 	if dataType == "dict":
@@ -28,7 +28,7 @@ from pymongo import MongoClient as mongo
 	elif dataType == "text":
 		emb = discord.Embed(title = "Your Inventory:", description=text, color=color)
 		
-	await ctx.send(embed=emb)'''
+	await ctx.send(embed=emb)
 
 
 cluster = mongo(os.environ["MONGOLAB_URL"])  #Same as process.env.MONGO_URL
@@ -39,19 +39,15 @@ inventories = containers["Inventories"]
 dependancies = cluster['Dependancies']
 values = dependancies["Values"]
 
-result = 0
-print(result)
-sys.stdout.flush()
-
-'''ctx = sys.argv[1]
+ctx = sys.argv[1]
 id = str(sys.argv[2])
 
-inventory = {}'''
+inventory = {}
 
 
 
 
-'''userList = values.find_one({"_id":"UserList"})
+userList = values.find_one({"_id":"UserList"})
 if userList == None:
 	values.insert_one({"_id": "UserList"})
 	userList = values.find_one({"_id":"UserList"})
@@ -63,11 +59,11 @@ else:
 		{"_id": "UserList"},
 		{"$set": id: None}},
 		upsert=True
-	) '''
+	) 
 
 
 
-'''
+
 if pre_existance == True:
 
 	data = inventories.find_one({"_id": id})
@@ -99,4 +95,4 @@ else:
 
 result = 0
 print(result)
-sys.stdout.flush()'''
+sys.stdout.flush()
