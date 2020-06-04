@@ -32,10 +32,7 @@ async def log(ctx, dataType, data):
 
 	elif dataType == "text":
 		emb = discord.Embed(title = "Your Inventory:", description=data, color=color)
-
-	print(1)
-	sys.stdout.flush()
-		
+	
 	await ctx.send(embed=emb)
 
 
