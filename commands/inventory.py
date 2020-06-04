@@ -8,7 +8,7 @@ from discord.utils import get
 from pymongo import MongoClient as mongo
 
 
-async def log(ctx, dataType, data):
+async def log(client, dataType, data):
 	slotCtr = 0
 	color = 0x00ff00
 	if dataType == "dict":
@@ -33,7 +33,7 @@ async def log(ctx, dataType, data):
 	elif dataType == "text":
 		emb = discord.Embed(title = "Your Inventory:", description=data, color=color)
 	
-	'''user = discord.Client.get_user(int(id))
+	user = client.get_user(int(id))
 	dmChannel = user.dm_channel()
 	if dmChannel = None:
 		dmChannel = user.create_dm()
