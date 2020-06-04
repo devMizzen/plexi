@@ -8,7 +8,7 @@ from discord.utils import get
 from pymongo import MongoClient as mongo
 
 
-async def log(client, dataType, data):
+def log(client, dataType, data):
 	result = 0
 	print(result)
 	sys.stdout.flush()'''
