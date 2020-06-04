@@ -37,9 +37,9 @@ async def log(client, dataType, data):
 	dmChannel = user.dm_channel()
 	if dmChannel = None:
 		dmChannel = user.create_dm()
-	dmChannel.send(embed=emb)'''
+	dmChannel.send(embed=emb)
 
-	ctx.send(embed=emb)
+	#ctx.send(embed=emb)
 
 
 cluster = mongo(os.environ["MONGOLAB_URL"])  #Same as process.env.MONGO_URL
