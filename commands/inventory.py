@@ -48,11 +48,11 @@ async def on_ready():
 
 		if isEmpty == False:
 			
-			log(id, "dict", data)
+			log(bot, id, "dict", data)
 
 		else:
 			msg = "Your inventory is empty."
-			log(id, "text", msg)
+			log(bot, id, "text", msg)
 				#print(result)
 				#sys.stdout.flush()
 	else:	
@@ -68,9 +68,9 @@ async def on_ready():
 		inventory["isEmpty"] = True
 		inventories.insert_one(inventory)
 		msg = "Your inventory is empty."
-		log(id, "text", msg)
+		log(bot, id, "text", msg)
 
-async def log(id, dataType, data):
+async def log(bot, id, dataType, data):
 	slotCtr = 0
 	color = 0x00ff00
 	if dataType == "dict":
