@@ -74,11 +74,7 @@ else:
 	) 
 
 
-result = 0
-print(result)
-sys.stdout.flush()
-
-'''if pre_existance == True:
+if pre_existance == True:
 
 	data = inventories.find_one({"_id": id})
 	isEmpty = data["isEmpty"]
@@ -105,5 +101,8 @@ else:
 	inventory["isEmpty"] = True
 	inventories.insert_one(inventory)
 	
-	log(ctx, "dict", inventory)'''
+	result = 0
+	print(result)
+	sys.stdout.flush()
+	#log(ctx, "dict", inventory)
 
