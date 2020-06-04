@@ -13,7 +13,7 @@ token = os.environ["token"]
 bot = commands.Bot(command_prefix='/')
 
 @bot.event
-async def on_ready():
+async def on_ready(bot):
 	cluster = mongo(os.environ["MONGOLAB_URL"])  #Same as process.env.MONGO_URL
 
 	containers = cluster['Containers']
