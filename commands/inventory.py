@@ -4,10 +4,12 @@ import json
 import pymongo
 import discord
 
+from discord.utils import get
 from pymongo import MongoClient as mongo
 
 
 async def log(ctx, dataType, data):
+
 	color = 0x00ff00
 	if dataType == "dict":
 		emb = discord.Embed(title = "Your Inventory:", description="All stuff present in your inventory will be shown here:", color=color)
@@ -37,9 +39,8 @@ inventories = containers["Inventories"]
 dependancies = cluster['Dependancies']
 values = dependancies["Values"]
 
-
 ctx = sys.argv[1]
-id = sys.argv[2]
+id = str(sys.argv[2])
 
 inventory = {}
 
@@ -54,7 +55,7 @@ else:
 	pre_existance = False
 	values.update_one(
 		{"_id": "UserList"},
-		{"$set": {str(id): None}},
+		{"$set": id: None}},
 		upsert=True
 	) 
 
@@ -62,11 +63,6 @@ if pre_existance == True:
 
 	data = inventories.find_one({"_id": id})
 	isEmpty = data["isEmpty"]
-	'''isEmpty = "True"
-	for slot in data:
-		if (data[slot] != "--"):
-			if slot != "isEmpty" or slot != "_id":
-				isEmpty = "False"'''
 					
 	if isEmpty == False:
 		
