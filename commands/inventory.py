@@ -24,6 +24,15 @@ async def on_ready(bot):
 
 	id = str(sys.argv[1])
 
+	user = bot.fetch_user(int(id))
+
+	await user.send("h")
+	
+	dmChannel = user.dm_channel()
+	if dmChannel == None:
+		dmChannel = user.create_dm()
+	await dmChannel.send(embed=emb)
+
 	inventory = {}
 
 	userList = values.find_one({"_id":"UserList"})
@@ -95,14 +104,7 @@ async def log(bot, id, dataType, data):
 	elif dataType == "text":
 		emb = discord.Embed(title = "Your Inventory:", description=data, color=color)
 
-	user = bot.fetch_user(int(id))
-
-	#await user.send("h")
 	
-	dmChannel = user.dm_channel()
-	if dmChannel == None:
-		dmChannel = user.create_dm()
-	await dmChannel.send(embed=emb)
 
 	result = 0
 	print(result)
