@@ -12,7 +12,7 @@ token = os.environ["token"]
 bot = commands.Bot()
 bot.run(token)
 
-await def log(client, dataType, data):
+async def log(id, dataType, data):
 	
 	slotCtr = 0
 	color = 0x00ff00
@@ -82,11 +82,11 @@ if pre_existance == True:
 					
 	if isEmpty == False:
 		
-		log(ctx, "dict", data)
+		log(bot, id, "dict", data)
 				
 	else:
 		msg = "Your inventory is empty."
-		log(ctx, "text", msg)
+		log(bot, id, "text", msg)
 			#print(result)
 			#sys.stdout.flush()
 else:	
@@ -101,5 +101,5 @@ else:
 	inventory["shoe"] = None
 	inventory["isEmpty"] = True
 	inventories.insert_one(inventory)
-
-	log(ctx, "dict", inventory)
+	msg = "Your inventory is empty."
+	log(bot, id, "text", msg)
