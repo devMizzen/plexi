@@ -11,10 +11,10 @@ exports.run = (args, message, bot, cmds, cluster) => {
     
     
     console.log('Connected... Transmission Successful!')
-    const pythonProcess = spawn('python',["./commands/inventory.py", userid]);
+    const pythonProcess = spawn('python',["./commands/inventory.py", message, userid]);
     pythonProcess.stdout.on('data', (inv) => {
 
-        const db = cluster.db('plexi_users')
+        /*const db = cluster.db('plexi_users')
         const player = db.collection(userid);
         const dependancies = db.collection("Dependancies")
         
@@ -28,8 +28,8 @@ exports.run = (args, message, bot, cmds, cluster) => {
 
         console.log(Object.values(userList));*/
 
-        console.log(inventory);
-        console.log(inventory.isEmpty)
+        /*console.log(inventory);
+        console.log(inventory.isEmpty)*/
 
         const inventoryembed = new Discord.RichEmbed()
         .setTitle(`${message.author.username}'s Inventory`)
@@ -40,7 +40,7 @@ exports.run = (args, message, bot, cmds, cluster) => {
         //message.reply(inventory.check)
         //if(inv.toString() === 0){
         
-        if(inventory.isEmpty === true){
+        /*if(inventory.isEmpty === true){
         //if(inventory.check === '-'){
         const inventorycheck = new Discord.RichEmbed()
         .setTitle(`${message.author.username}'s Inventory`)
@@ -100,7 +100,8 @@ exports.run = (args, message, bot, cmds, cluster) => {
             message.author.send(inventoryshow2)
 
         }
-        //cluster.close();
-     });
+        //
+     });*/
     });
+})
 }

@@ -2,44 +2,51 @@ import os
 import sys
 import json
 import pymongo
+import discord
 
 from pymongo import MongoClient as mongo
 
-id = str(sys.argv[1])
+
+def log(ctx, dataType, data):
+	color = 0x------
+	if dataType == "dict":
+		emb = discord.Embed(title = "Your Inventory:", description="All stuff present in your inventory will be shown here:", color=color)
+		for key in data:
+			emb.add_field(name=key,value=data[key])
+		
+
+
 
 cluster = mongo(os.environ["MONGOLAB_URL"])  #Same as process.env.MONGO_URL
-
-db = cluster['plexi_users']
-player = db[str(id)]
-dependancies = db['Dependancies']
-
-'''containers = cluster['Main']
+containers = cluster['Containers']
 inventories = db["Inventories"]
 
 dependancies = cluster['Dependancies']
-injectors = dependancies["Injectors"]'''
+values = db["Values"]
 
+
+ctx = str(sys.argv[1])
+id = str(sys.argv[2])
 inventory = {}
 
-userList = dependancies.find_one({"_id":"UserList"})
+
+userList = values.find_one({"_id":"UserList"})
 if userList == None:
-	dependancies.insert_one({"_id": "UserList"})
-	userList = dependancies.find_one({"_id":"UserList"})
+	values.insert_one({"_id": "UserList"})
+	userList = values.find_one({"_id":"UserList"})
 if id in userList:
 	pre_existance = True
 else:
 	pre_existance = False
-	dependancies.update_one(
+	values.update_one(
 		{"_id": "UserList"},
-		{
-			"$set": {str(id): None}
-		},
+		{"$set": {str(id): None}},
 		upsert=True
 	) 
 
 if pre_existance == True:
 
-	data = player.find_one({"_id": "inventory"})
+	data = inventories.find_one({"_id": id})
 	isEmpty = data["isEmpty"]
 	'''isEmpty = "True"
 	for slot in data:
@@ -49,35 +56,15 @@ if pre_existance == True:
 					
 	if isEmpty == False:
 		
-		inventory["_id"] = "inventory"
-		inventory["lh"] = data["lh"]
-		for i in range(32):
-			slotNo = "slot"+ str(i+1)
-			inventory[slotNo] = data[slotNo]
-		inventory["head"] = data["head"]
-		inventory["chest"] = data["chest"]
-		inventory["torso"] = data["torso"]
-		inventory["shoe"] = data["shoe"]
-		inventory["isEmpty"] = "False"
-		dependancies.replace_one(
-			{"_id": "inventory"}, 
-			{ "$set": inventory}
-		)
-			
+		log(ctx, "dict", data)
 				
 	else:
-		inv = dependancies.update_one(
-			{"_id": "inventory"},
-			{"$set": {
-				"ID": id,
-				"isEmpty": True
-				}
-			}
-		)
+		msg = "Your inventory is empty."
+		log(ctx, "text", msg)
 			#print(result)
 			#sys.stdout.flush()
 else:	
-	inventory["_id"] = "inventory"
+	inventory["_id"] = id
 	inventory["lh"] = None
 	for i in range(32):
 		slotNo = "slot"+ str(i+1)
@@ -87,11 +74,9 @@ else:
 	inventory["torso"] = None
 	inventory["shoe"] = None
 	inventory["isEmpty"] = True
-	player.insert_one(inventory)
-	dependancies.replace_one(
-		{"_id": "inventory"},
-		inventory
-	)
+	inventories.insert_one(inventory)
+	
+	log("dict", inventory)
 
 result = 0
 print(result)
