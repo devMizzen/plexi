@@ -11,7 +11,7 @@ from pymongo import MongoClient as mongo
 token = os.environ["token"]
 bot = discord.Client.login(token=token)
 
-async def log(id, dataType, data):
+async def log(bot, id, dataType, data):
 	
 	slotCtr = 0
 	color = 0x00ff00
