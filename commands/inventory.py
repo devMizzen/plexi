@@ -9,7 +9,9 @@ from discord.ext import commands
 from pymongo import MongoClient as mongo
 
 token = os.environ["token"]
-bot = discord.Client.login(token=token, bot=True)
+bot = discord.Client.login(token)
+
+'''
 
 async def log(bot, id, dataType, data):
 	
@@ -36,7 +38,6 @@ async def log(bot, id, dataType, data):
 
 	elif dataType == "text":
 		emb = discord.Embed(title = "Your Inventory:", description=data, color=color)
-	
 
 	user = bot.get_user(int(id))
 
@@ -49,7 +50,7 @@ async def log(bot, id, dataType, data):
 
 	#ctx.send(embed=emb)'''
 
-cluster = mongo(os.environ["MONGOLAB_URL"])  #Same as process.env.MONGO_URL
+'''cluster = mongo(os.environ["MONGOLAB_URL"])  #Same as process.env.MONGO_URL
 
 containers = cluster['Containers']
 inventories = containers["Inventories"]
@@ -104,7 +105,7 @@ else:
 	inventories.insert_one(inventory)
 	msg = "Your inventory is empty."
 	log(bot, id, "text", msg)
-
+'''
 result = 0
 print(result)
 sys.stdout.flush()
