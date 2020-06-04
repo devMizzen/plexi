@@ -34,9 +34,10 @@ async def log(id, dataType, data):
 		emb = discord.Embed(title = "Your Inventory:", description=data, color=color)
 	
 	user = discord.Client.get_user(int(id))
-	print(0)
-	sys.stdout.flush()
-	user.send(embed=emb)
+	dmChannel = user.dm_channel()
+	if dmChannel = None:
+		dmChannel = user.create_dm()
+	dmChannel.send(embed=emb)
 
 
 cluster = mongo(os.environ["MONGOLAB_URL"])  #Same as process.env.MONGO_URL
