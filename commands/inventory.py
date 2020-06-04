@@ -9,7 +9,7 @@ from discord.ext import commands
 from pymongo import MongoClient as mongo
 
 token = os.environ["token"]
-bot = discord.Client.login(token=token)
+bot = discord.Client.login(token=token, bot=True)
 
 async def log(bot, id, dataType, data):
 	
@@ -104,3 +104,7 @@ else:
 	inventories.insert_one(inventory)
 	msg = "Your inventory is empty."
 	log(bot, id, "text", msg)
+
+result = 0
+print(result)
+sys.stdout.flush()
