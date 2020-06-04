@@ -8,9 +8,9 @@ from discord.utils import get
 from pymongo import MongoClient as mongo
 
 
-def log(client, dataType, data):
+await def log(client, dataType, data):
 	
-	'''slotCtr = 0
+	slotCtr = 0
 	color = 0x00ff00
 	if dataType == "dict":
 		emb = discord.Embed(title = "Your Inventory:", description="All stuff present in your inventory will be shown here:", color=color)
@@ -39,7 +39,7 @@ def log(client, dataType, data):
 	dmChannel = user.dm_channel()
 	if dmChannel = None:
 		dmChannel = user.create_dm()
-	dmChannel.send(embed=emb)'''
+	await dmChannel.send(embed=emb)
 
 	#ctx.send(embed=emb)
 
@@ -100,9 +100,6 @@ else:
 	inventory["shoe"] = None
 	inventory["isEmpty"] = True
 	inventories.insert_one(inventory)
-	
-	result = 0
-	print(result)
-	sys.stdout.flush()
-	#log(ctx, "dict", inventory)
+
+	log(ctx, "dict", inventory)
 
