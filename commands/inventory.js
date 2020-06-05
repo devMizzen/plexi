@@ -28,7 +28,7 @@ exports.run = (args, message, bot, cmds, cluster) => {
                         message.author.send(inventoryembed1);
                     }
                     else{
-                        const inventoryembed1 = new Discord.RichEmbed()
+                        const inventoryembed1 = new Discord.MessageEmbed()
                         .setTitle(`${message.author.username}'s Inventory`)
                         .setDescription("Contents of your inventory.")
                         .addFields(
@@ -53,7 +53,7 @@ exports.run = (args, message, bot, cmds, cluster) => {
                         )
                         .setFooter(`• Requested By: ${message.author.tag}`, message.author.avatarURL)
 
-                        const invEmbed2 = new Discord.RichEmbed()
+                        const invEmbed2 = new Discord.MessageEmbed()
                         .addFields(
                             {name: "Slot 18", value : doc.slot18},
                             {name: "Slot 19", value : doc.slot19},
