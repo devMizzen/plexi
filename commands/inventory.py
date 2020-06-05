@@ -2,143 +2,106 @@ import os
 import sys
 import json
 import pymongo
-import discord
 
-from discord.utils import get
-from discord.ext import commands
 from pymongo import MongoClient as mongo
 
-token = os.environ["token"]
 id = str(sys.argv[1])
-user = bot.fetch_user(int(id))
-bot = commands.Bot(command_prefix='/')
 
+cluster = mongo(os.environ["MONGOLAB_URL"])  #Same as process.env.MONGO_URL
 
-@bot.event
-async def on_ready(bot):
-	cluster = mongo(os.environ["MONGOLAB_URL"])  #Same as process.env.MONGO_URL
+'''db = cluster['plexi_users']
+player = db[str(id)]
+dependancies = db['Dependancies']'''
 
-	containers = cluster['Containers']
-	inventories = containers["Inventories"]
+containers = cluster['Containers']
+inventories = containers["Inventories"]
 
-	dependancies = cluster['Dependancies']
-	values = dependancies["Values"]
+dependancies = cluster['Database']
+values = dependancies['Values']
+injectors = dependancies["Injectors"]
 
-	await user.send("h")
-	
-	dmChannel = user.dm_channel()
-	if dmChannel == None:
-		dmChannel = user.create_dm()
-	await dmChannel.send(embed=emb)
+inventory = {}
 
-	result = 0
-	print(result)
-	sys.stdout.flush()
-	'''
-	inventory = {}
-
+userList = values.find_one({"_id":"UserList"})
+if userList == None:
+	values.insert_one({"_id": "UserList"})
 	userList = values.find_one({"_id":"UserList"})
-	if userList == None:
-		values.insert_one({"_id": "UserList"})
-		userList = values.find_one({"_id":"UserList"})
-	if id in userList:
-		pre_existance = True
-	else:
-		pre_existance = False
-		values.update_one(
-			{"_id": "UserList"},
-			{"$set": {id: None}},
-			upsert=True
-		) 
+if id in userList:
+	pre_existance = True
+else:
+	pre_existance = False
+	values.update_one(
+		{"_id": "UserList"},
+		{
+			"$set": {id: None}
+		},
+		upsert=True
+	) 
 
+if pre_existance == True:
 
-	if pre_existance == True:
-
-		data = inventories.find_one({"_id": id})
-		isEmpty = data["isEmpty"]
-
-		if isEmpty == False:
-			
-			log(bot, id, "dict", data)
-
-		else:
-			msg = "Your inventory is empty."
-			slotCtr = 0
-			color = 0x00ff00
-			if dataType == "dict":
-				emb = discord.Embed(title = "Your Inventory:", description="All stuff present in your inventory will be shown here:", color=color)
-				for key in data:
-					if key in ("_id", "isEmpty"):
-						continue
-					if key == "lh":
-						name = "Left hand"
-					elif "slot" in key:
-						slotCtr += 1
-						if slotCtr >= 10:
-							name = "Slot "+ key[-2]+key[-1]
-						else:
-							name = "Slot "+key[-1]
-
-					else:
-						name = key
-
-					emb.add_field(name=name,value=data[key])
-
-			elif dataType == "text":
-				emb = discord.Embed(title = "Your Inventory:", description=data, color=color)
-
-			result = 0
-			print(result)
-			sys.stdout.flush()
-				#print(result)
-				#sys.stdout.flush()
-	else:	
-		inventory["_id"] = id
-		inventory["lh"] = None
+	data = inventories.find_one({"_id": id})
+	isEmpty = data["isEmpty"]
+					
+	if isEmpty == False:
+		
+		inventory["playerID"] = id
+		inventory["lh"] = data["lh"]
 		for i in range(32):
 			slotNo = "slot"+ str(i+1)
-			inventory[slotNo] = None
-		inventory["head"] = None
-		inventory["chest"] = None
-		inventory["torso"] = None
-		inventory["shoe"] = None
-		inventory["isEmpty"] = True
-		inventories.insert_one(inventory)
-		msg = "Your inventory is empty."
-		log(bot, id, "text", msg)
-
-async def log(bot, id, dataType, data):
-	slotCtr = 0
-	color = 0x00ff00
-	if dataType == "dict":
-		emb = discord.Embed(title = "Your Inventory:", description="All stuff present in your inventory will be shown here:", color=color)
-		for key in data:
-			if key in ("_id", "isEmpty"):
-				continue
-			if key == "lh":
-				name = "Left hand"
-			elif "slot" in key:
-				slotCtr += 1
-				if slotCtr >= 10:
-					name = "Slot "+ key[-2]+key[-1]
-				else:
-					name = "Slot "+key[-1]
+			inventory[slotNo] = data[slotNo]
+		inventory["head"] = data["head"]
+		inventory["chest"] = data["chest"]
+		inventory["torso"] = data["torso"]
+		inventory["shoe"] = data["shoe"]
+		inventory["isEmpty"] = "False"
+		injectors.update_one(
+			{"_id": "inventory"}, 
+			{ "$set": inventory}
+		)
+			
 				
-			else:
-				name = key
+	else:
+		inv = dependancies.update_one(
+			{"_id": "inventory"},
+			{"$set": {
+				"playerID": id,
+				"isEmpty": True
+				}
+			}
+		)
+			#print(result)
+			#sys.stdout.flush()
+else:	
+	inventory["_id"] = id
+	inventory["lh"] = None
+	for i in range(32):
+		slotNo = "slot"+ str(i+1)
+		inventory[slotNo] = None
+	inventory["head"] = None
+	inventory["chest"] = None
+	inventory["torso"] = None
+	inventory["shoe"] = None
+	inventory["isEmpty"] = True
+	player.insert_one(inventory)
 
-			emb.add_field(name=name,value=data[key])
 
-	elif dataType == "text":
-		emb = discord.Embed(title = "Your Inventory:", description=data, color=color)
+	inventory = {}
+	inventory["playerID"] = id
+	inventory["lh"] = None
+	for i in range(32):
+		slotNo = "slot"+ str(i+1)
+		inventory[slotNo] = None
+	inventory["head"] = None
+	inventory["chest"] = None
+	inventory["torso"] = None
+	inventory["shoe"] = None
+	inventory["isEmpty"] = True
+	dependancies.update_one(
+		{"_id": "inventory"},
+		{"$set": inventory}
+	)
 
-	
-
-	result = 0
-	print(result)
-	sys.stdout.flush()
-
-
-	#ctx.send(embed=emb)'''
-on_ready(user)
-bot.run(token)
+result = 0
+print(result)
+sys.stdout.flush()

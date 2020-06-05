@@ -12,6 +12,17 @@ exports.run = (args, message, bot, cmds, cluster) => {
         console.log('Connected... Transmission Successful!')
         pythonProcess.stdout.on('data', (inv) => {
 
+            const db = cluster.db("testdb");
+
+            db.listCollections().toArray().then((docs) => {
+                console.log('Available collections:');
+                docs.forEach((doc, idx, array) => { console.log(doc.name) });
+            }).catch((err) => {
+                console.log(err);
+            }).finally(() => {
+                cluster.close();
+            });
+            
             console.log('Received Data... inventory.py Check!')
 
             const inventoryembed = new Discord.RichEmbed()
