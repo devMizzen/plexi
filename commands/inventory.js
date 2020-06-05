@@ -15,11 +15,10 @@ exports.run = (args, message, bot, cmds, cluster) => {
             const datb = cluster.db("Containers");
             const inventories = datb.collection("Inventories")
 
-            inventories.findOne({"_id": userid}).then((docs) => {
+            inventories.find({"_id": userid}).then((docs) => {
             //inventories.findOne({"_id": "userid"}).toArray().then((docs) => {
                 console.log('Available Documents:');
-                docs.toArray().forEach((doc, idx, array) => {
-                //docs.forEach((doc, idx, array) => { 
+                docs.forEach((doc, idx, array) => { 
                     const isEmpty = doc.isEmpty;
                     if(isEmpty === true){
                         const inventoryembed1 = new Discord.RichEmbed()
