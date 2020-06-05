@@ -42,4 +42,5 @@ exports.run = (args, message, bot, cmds, cluster) => {
         
         });
     });
+})
 }
