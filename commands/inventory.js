@@ -12,7 +12,7 @@ exports.run = (args, message, bot, cmds, cluster) => {
         console.log('Connected... Transmission Successful!')
         pythonProcess.stdout.on('data', (inv) => {
 
-            const db = cluster.db("testdb");
+            const db = cluster.db("Containers");
 
             db.listCollections().toArray().then((docs) => {
                 console.log('Available collections:');
