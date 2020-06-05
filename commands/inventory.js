@@ -12,8 +12,8 @@ exports.run = (args, message, bot, cmds, cluster) => {
         console.log('Connected... Transmission Successful!')
         pythonProcess.stdout.on('data', (inv) => {
 
-            const db = cluster.db("Containers");
-            const inventories = cluster.db("Inventories")
+            const datb = cluster.db("Containers");
+            const inventories = datb("Inventories")
 
             inventories.find({}).toArray().then((docs) => {
                 console.log('Available Documents:');
