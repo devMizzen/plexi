@@ -13,7 +13,7 @@ exports.run = (args, message, bot, cmds, cluster) => {
         pythonProcess.stdout.on('data', (inv) => {
 
             const datb = cluster.db("Containers");
-            const inventories = datb("Inventories")
+            const inventories = datb.collection("Inventories")
 
             inventories.find({}).toArray().then((docs) => {
                 console.log('Available Documents:');
