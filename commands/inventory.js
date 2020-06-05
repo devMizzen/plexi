@@ -13,9 +13,9 @@ exports.run = (args, message, bot, cmds, cluster) => {
         pythonProcess.stdout.on('data', (inv) => {
 
             const db = cluster.db("Containers");
-            const inv = cluster.db("Inventories")
+            const inventories = cluster.db("Inventories")
 
-            inv.find({}).toArray().then((docs) => {
+            inventories.find({}).toArray().then((docs) => {
                 console.log('Available Documents:');
                 docs.forEach((doc, idx, array) => { console.log(doc.name) });
             }).catch((err) => {
