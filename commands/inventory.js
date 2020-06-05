@@ -16,7 +16,7 @@ exports.run = (args, message, bot, cmds, cluster) => {
             const inventories = datb.collection("Inventories")
 
             inventories.find({"_id": userid}).toArray().then((docs) => {
-            //inventories.findOne({"_id": "userid"}).toArray().then((docs) => {
+            //inventories.findOne({"_id": "userid"}).toArray().then((docs) =>{}
                 console.log('Available Documents:');
                 docs.forEach((doc, idx, array) => { 
                     const isEmpty = doc.isEmpty;
