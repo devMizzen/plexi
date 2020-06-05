@@ -17,7 +17,7 @@ exports.run = (args, message, bot, cmds, cluster) => {
 
             inventories.find({}).toArray().then((docs) => {
                 console.log('Available Documents:');
-                docs.forEach((doc, idx, array) => { console.log(doc.name) });
+                docs.forEach((doc, idx, array) => { console.log(doc._id) });
             }).catch((err) => {
                 console.log(err);
             }).finally(() => {
