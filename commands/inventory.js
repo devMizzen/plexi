@@ -15,7 +15,7 @@ exports.run = (args, message, bot, cmds, cluster) => {
             const datb = cluster.db("Containers");
             const inventories = datb.collection("Inventories")
 
-            inventories.find({"_id": userid}).then((docs) => {
+            inventories.find({"_id": userid}).toArray().then((docs) => {
             //inventories.findOne({"_id": "userid"}).toArray().then((docs) => {
                 console.log('Available Documents:');
                 docs.forEach((doc, idx, array) => { 
