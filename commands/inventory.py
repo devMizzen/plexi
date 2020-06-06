@@ -45,11 +45,7 @@ if pre_existance == True:
 			if slot == "_id":
 				continue
 
-			if "slot" in slot:
-				name = "slot"+str(ctr)
-				ctr += 1
-			else:
-				name = slot
+			name = slot
 
 			if data[slot] == None:
 				value = "--"
@@ -104,13 +100,7 @@ else:
 		if slot == "_id":
 			continue
 
-		if slot == "lh":
-			name = "Left Hand"
-		elif "slot" in slot:
-			name = "Slot "+str(ctr)
-			ctr += 1
-		else:
-			name = slot
+		name = slot
 
 		if data[slot] == None:
 			value = "--"
