@@ -5,11 +5,9 @@ import pymongo
 
 from pymongo import MongoClient as mongo
 
-#id = str(sys.argv[1])
-id = str(786)
+id = str(sys.argv[1])
 
-#cluster = mongo(os.environ["MONGOLAB_URL"])
-cluster = mongo("mongodb+srv://plexi-bot:saz11722@plexi-database-imh57.gcp.mongodb.net/test?retryWrites=true&w=majority")
+cluster = mongo(os.environ["MONGOLAB_URL"])
 
 containers = cluster['Containers']
 inventories = containers["Inventories"]
