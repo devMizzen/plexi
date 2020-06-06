@@ -28,9 +28,7 @@ else:
 	pre_existance = False
 	values.update_one(
 		{"_id": "UserList"},
-		{
-			"$set": {id: None}
-		},
+		{"$set": {id: None}},
 		upsert=True
 	) 
 
@@ -41,7 +39,28 @@ if pre_existance == True:
 					
 	if isEmpty == False:
 		
-		inventory["lh"] = data["lh"]
+		ctr = 1
+		injector = {}
+		for slot in data:
+			if slot == "_id":
+				continue
+
+			if slot == "lh":
+				name = "Left Hand"
+			elif "slot" in slot:
+				name = "Slot "+str(ctr)
+				ctr += 1
+			else:
+				name = slot
+
+			if data[slot] == None:
+				value = "--"
+			else:
+				value = data[slot]
+
+			injector[name] = value
+
+		'''inventory["lh"] = data["lh"]
 		for i in range(32):
 			slotNo = "slot"+ str(i+1)
 			inventory[slotNo] = data[slotNo]
@@ -49,10 +68,10 @@ if pre_existance == True:
 		inventory["chest"] = data["chest"]
 		inventory["torso"] = data["torso"]
 		inventory["shoe"] = data["shoe"]
-		inventory["isEmpty"] = "False"
+		inventory["isEmpty"] = "False"'''
 		injectors.update_one(
 			{"_id": "inventory"}, 
-			{ "$set": inventory},
+			{ "$set": injector},
 			upsert=True
 		)
 			
@@ -81,10 +100,30 @@ else:
 	inventory["isEmpty"] = True
 	inventories.insert_one(inventory)
 
-	inventory.pop('_id')
+	ctr = 1
+	injector = {}
+	for slot in data:
+		if slot == "_id":
+			continue
+
+		if slot == "lh":
+			name = "Left Hand"
+		elif "slot" in slot:
+			name = "Slot "+str(ctr)
+			ctr += 1
+		else:
+			name = slot
+
+		if data[slot] == None:
+			value = "--"
+		else:
+			value = data[slot]
+
+		injector[name] = value
+
 	injectors.update_one(
 		{"_id": "inventory"},
-		{"$set": inventory},
+		{"$set": injector},
 		upsert = True
 	)
 
