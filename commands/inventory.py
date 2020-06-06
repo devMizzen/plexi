@@ -96,7 +96,7 @@ else:
 
 	ctr = 1
 	injector = {}
-	for slot in data:
+	for slot in inventory:
 		if slot == "_id":
 			continue
 
