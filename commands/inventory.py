@@ -5,9 +5,11 @@ import pymongo
 
 from pymongo import MongoClient as mongo
 
-'''id = str(sys.argv[1])
+#id = str(sys.argv[1])
+id = str(786)
 
-cluster = mongo(os.environ["MONGOLAB_URL"])  #Same as process.env.MONGO_URL
+#cluster = mongo(os.environ["MONGOLAB_URL"])
+cluster = mongo("mongodb+srv://plexi-bot:saz11722@plexi-database-imh57.gcp.mongodb.net/test?retryWrites=true&w=majority")
 
 containers = cluster['Containers']
 inventories = containers["Inventories"]
@@ -41,7 +43,6 @@ if pre_existance == True:
 					
 	if isEmpty == False:
 		
-		inventory["playerID"] = id
 		inventory["lh"] = data["lh"]
 		for i in range(32):
 			slotNo = "slot"+ str(i+1)
@@ -53,18 +54,19 @@ if pre_existance == True:
 		inventory["isEmpty"] = "False"
 		injectors.update_one(
 			{"_id": "inventory"}, 
-			{ "$set": inventory}
+			{ "$set": inventory},
+			upsert=True
 		)
 			
 				
 	else:
-		inv = dependancies.update_one(
+		inv = injectors.update_one(
 			{"_id": "inventory"},
 			{"$set": {
-				"playerID": id,
 				"isEmpty": True
 				}
-			}
+			},
+			upsert=True
 		)
 			#print(result)
 			#sys.stdout.flush()
@@ -79,24 +81,14 @@ else:
 	inventory["torso"] = None
 	inventory["shoe"] = None
 	inventory["isEmpty"] = True
-	player.insert_one(inventory)
+	inventories.insert_one(inventory)
 
-
-	inventory = {}
-	inventory["playerID"] = id
-	inventory["lh"] = None
-	for i in range(32):
-		slotNo = "slot"+ str(i+1)
-		inventory[slotNo] = None
-	inventory["head"] = None
-	inventory["chest"] = None
-	inventory["torso"] = None
-	inventory["shoe"] = None
-	inventory["isEmpty"] = True
-	dependancies.update_one(
+	inventory.pop('_id')
+	injectors.update_one(
 		{"_id": "inventory"},
-		{"$set": inventory}
-	)'''
+		{"$set": inventory},
+		upsert = True
+	)
 
 result = 0
 print(result)

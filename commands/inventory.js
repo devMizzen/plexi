@@ -12,10 +12,10 @@ exports.run = (args, message, bot, cmds, cluster) => {
         console.log('Connected... Transmission Successful!')
         pythonProcess.stdout.on('data', (inv) => {
 
-            const datb = cluster.db("Containers");
-            const inventories = datb.collection("Inventories")
+            const datb = cluster.db("Database");
+            const inventories = datb.collection("Injectors")
 
-            inventories.find({"_id": userid}).toArray().then((docs) => {
+            inventories.find({"_id": "inventory"}).toArray().then((docs) => {
             //inventories.findOne({"_id": "userid"}).toArray().then((docs) =>{}
                 console.log('Available Documents:');
                 docs.forEach((doc, idx, array) => { 
