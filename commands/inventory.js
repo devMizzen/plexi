@@ -15,6 +15,13 @@ exports.run = (args, message, bot, cmds, cluster) => {
             const datb = cluster.db("Database");
             const inventories = datb.collection("Injectors")
 
+            const invsent = new Discord.RichEmbed()
+            .setTitle(`${message.author.username}'s Inventory`)
+            .setDescription('Due to the privacy of your inventory it has been sent to dms')
+            .setTimestamp()
+            .setFooter(`• Requested By: ${message.author.tag}`, message.author.avatarURL)
+            message.channel.send(invsent)
+
             inventories.find({"_id": "inventory"}).toArray().then((docs) => {
             //inventories.findOne({"_id": "userid"}).toArray().then((docs) =>{}
                 console.log('Available Documents:');
