@@ -88,10 +88,14 @@ if pre_existance == True:
 			#sys.stdout.flush()
 else:	
 	inventory["_id"] = id
-	inventory["lh"] = None
+	'''inventory["lh"] = None
 	for i in range(32):
 		slotNo = "slot"+ str(i+1)
-		inventory[slotNo] = None
+		inventory[slotNo] = None'''
+	slotList = []
+	for slotNo in range(37):
+		slotList.append(None)
+	inventory["slots"] = slotList
 	inventory["head"] = None
 	inventory["chest"] = None
 	inventory["torso"] = None
@@ -106,6 +110,20 @@ else:
 			continue
 
 		name = slot
+		if str(type(slot)) == "<class 'list'>":
+			ctr = 0
+			for invSlot in slot:
+				if ctr == 0:
+					name = "lh"
+				else:
+					name = "slot"+str(ctr)
+
+				if invSlot == None:
+					value = "--"
+				else:
+					value = invSlot
+					
+				injector[name] = value
 
 		if data[slot] == None:
 			value = "--"

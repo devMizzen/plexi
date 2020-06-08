@@ -16,7 +16,7 @@ dependancies = cluster['Database']
 values = dependancies['Values']
 injectors = dependancies["Injectors"]
 
-max_slots = 33
+max_slots = 37
 max_slot_size = 64
 
 
