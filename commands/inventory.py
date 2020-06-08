@@ -112,7 +112,7 @@ else:
 		name = slot
 		if str(type(slot)) == "<class 'list'>":
 			ctr = 0
-			for invSlot in slot:
+			for invSlot in inventory[slot]:
 				if ctr == 0:
 					name = "lh"
 				else:
