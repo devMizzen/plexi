@@ -39,13 +39,27 @@ if pre_existance == True:
 					
 	if isEmpty == False:
 		
-		ctr = 1
+		
 		injector = {}
 		for slot in data:
 			if slot == "_id":
 				continue
 
 			name = slot
+			if str(type(slot)) == "<class 'list'>":
+				ctr = 0
+				for invSlot in slot:
+					if ctr == 0:
+						name = "lh"
+					else:
+						name = "slot"+str(ctr)
+
+					if invSlot == None:
+						value = "--"
+					else:
+						value = invSlot
+					
+					injector[name] = value
 
 			if data[slot] == None:
 				value = "--"
@@ -54,15 +68,6 @@ if pre_existance == True:
 
 			injector[name] = value
 
-		'''inventory["lh"] = data["lh"]
-		for i in range(32):
-			slotNo = "slot"+ str(i+1)
-			inventory[slotNo] = data[slotNo]
-		inventory["head"] = data["head"]
-		inventory["chest"] = data["chest"]
-		inventory["torso"] = data["torso"]
-		inventory["shoe"] = data["shoe"]
-		inventory["isEmpty"] = "False"'''
 		injectors.update_one(
 			{"_id": "inventory"}, 
 			{ "$set": injector},

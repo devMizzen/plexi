@@ -10,10 +10,14 @@ import math
 
 from pymongo import MongoClient as mongo
 
-cluster = mongo(os.environ["MONGO_URL"])
-db = cluster["plexi_users"]
-player = db[id]
-dependancies = db["Dependancies"]
+cluster = mongo(os.environ["MONGO_LAB"])
+
+containers = cluster['Containers']
+inventories = containers["Inventories"]
+
+dependancies = cluster['Database']
+values = dependancies['Values']
+injectors = dependancies["Injectors"]
 
 #---------------------------------------------------------#
 #						Database						  #
@@ -52,27 +56,29 @@ pickBlocks = [
 ]
 
 pickIDs = {
-	"Wood Pickaxe": 1
-	"Stone Pickaxe": 2
-	"Iron Pickaxe": 3
-	"Diamond Pickaxe": 4
+	"Wood Pickaxe": 1,
+	"Stone Pickaxe": 2,
+	"Iron Pickaxe": 3,
+	"Diamond Pickaxe": 4,
 	"Gold Pickaxe": 5
 }
 
-itemGained = []
+#itemGained = []
+itemGained = {}
 
 #---------------------------------------------------------#
 #						  Input							  #
 #---------------------------------------------------------#
 
-user = sys.argv[1]
-#eq = sys.argv[2]
+'''user = str(sys.argv[1])
 t = sys.argv[2]
 
-playerInv = player.find_one({"_id": "inventory"})
+playerInv = inventories.find_one({"_id": user})
 numPicks = 0
 
 for slot in playerInv:
+	if slot in ("_id", "isEmpty"):
+		continue
 	entity = playerInv[slot]
 	if "Pickaxe" in entity:
 		toolType = entity[3::]
@@ -81,14 +87,12 @@ for slot in playerInv:
 if numPicks == 0:
 	eq = 0
 else:
-	eq = pickIDs[toolType]
+	eq = pickIDs[toolType]'''
 
-
-
-'''user = input("Enter name: ")
-eq = input("Enter equipment: ")
+user = input("Enter name: ")
+eq = int(input("Enter equipment: "))
 t = input("Enter Time in seconds: ")
-numPicks = int(input("Enter num of picks: "))'''
+numPicks = int(input("Enter num of picks: "))
 
 
 #---------------------------------------------------------#
@@ -101,15 +105,18 @@ def mine_start(user,time,eq,numPicks):
 	space = availableSpace(user)
 	breakTime = pickSpeed[eq]*1.5
 	#hold = math.ceil(dur/layerTime)
-	print(dur, round(dur/breakTime))
+	print("Time: "+str(dur))
+	print("Blocks: "+str(math.floor(dur/breakTime)))
 	print("----------------------")
 	timer = 0
 	try:
 		durability = pickBlocks[eq]*numPicks
 	except:
 		durability = 'inf'
-	while timer < round(dur/breakTime) and space > 0:
+	while timer < math.floor(dur/breakTime) and space > 0:
 		for entity in range(len(probs)):
+			if timer >= math.floor(dur/breakTime)-1:
+				return
 			space = availableSpace(user)
 			itemName = probs[entity]
 			hit = random.randint(1,100)
@@ -134,6 +141,7 @@ def mine_start(user,time,eq,numPicks):
 						if timer <dur:
 							timer += itemName[4]*pickSpeed[eq]
 						else:
+							qty = math.floor(timer)
 							break
 					if itemName[0] in ('Redstone Ore', 'Lapis Lazuli Ore'):
 						if itemName[0] == 'Redstone Ore':
@@ -143,19 +151,26 @@ def mine_start(user,time,eq,numPicks):
 							fac = random.randint(4,9)
 							qty = fac
 
-					if timer >= round(dur/breakTime):
-						qty = round(dur/breakTime)
+					if timer >= math.floor(dur/breakTime):
+						#qty = math.floor(dur/breakTime)
+						qty = timer
 						
 						if itemName[0] in itemGained:
-							for x in range(len(itemGained)):
-								if itemName[0] == itemGained[x] and itemGained[x+1] <64:
-									if itemGained[x+1] + qty <= 64:
-										itemGained[x+1] += qty
+							#for x in range(len(itemGained)):
+							for x in itemGained:
+								#if itemName[0] == itemGained[x] and itemGained[x+1] <64:
+								if itemName[0] == x and itemGained[x] <64:
+									#if itemGained[x+1] + qty <= 64:
+									if itemGained[x] + qty <= 64:
+										#itemGained[x+1] += qty
+										itemGained[x] += qty
 										qty = 0
 										break
 									else:
-										itemGained[x+1] = 64
-										qty = qty - (64-itemGained[x+1])
+										#itemGained[x+1] = 64
+										itemGained[x] = 64
+										#qty = qty - (64-itemGained[x+1])
+										qty = qty - (64-itemGained[x])
 										continue
 											
 								else:
@@ -164,143 +179,203 @@ def mine_start(user,time,eq,numPicks):
 							while qty != 0:
 								if space >= qty:
 									if qty <= 64:
-										itemGained.extend([itemName[0],qty])
+										#itemGained.extend([itemName[0],qty])
+										itemGained[itemName[0]] = qty
 										qty = 0
 									else:
-										itemGained.extend([itemName[0],64])
+										#itemGained.extend([itemName[0],64])
+										itemGained[itemName[0]] =64
 										qty -= 64
 								elif space < qty:
 									qty = space
 									if qty <= 64:
-										itemGained.extend([itemName[0],qty])
+										#itemGained.extend([itemName[0],qty])
+										itemGained[itemName[0]] = qty
 										qty = 0
 									else:
-										itemGained.extend([itemName[0],64])
+										itemGained[itemName[0]]= 64
 										qty -= 64
 										
 						else:
 							while qty!=0:
 								if space >= qty:
 									if qty <= 64:
-										itemGained.extend([itemName[0],qty])
+										itemGained[itemName[0]]=qty
 										qty = 0
 									else:
-										itemGained.extend([itemName[0],64])
+										itemGained[itemName[0]]=64
 										qty -= 64
 								else:
 									qty = space
 									if qty <= 64:
-										itemGained.extend([itemName[0],qty])
+										itemGained[itemName[0]]=qty
 										qty = 0
 									else:
-										itemGained.extend([itemName[0],64])
+										itemGained[itemName[0]]=64
 										qty -= 64
 									
-						break
+						return
 					else:
+						timer += qty
 						if itemName[0] in itemGained:
-							for x in range(len(itemGained)):
-								if itemName[0] == itemGained[x] and itemGained[x+1] <64:
-									if itemGained[x+1] + qty <= 64:
-										itemGained[x+1] += qty
+							#for x in range(len(itemGained)):
+							for x in itemGained:
+								if itemName[0] == x and itemGained[x] <64:
+									if itemGained[x] + qty <= 64:
+										itemGained[x] += qty
 										qty = 0
 										
-									elif itemGained[x+1] + qty > 64:
-										itemGained[x+1] = 64
-										qty -= (64-itemGained[x+1])
+									elif itemGained[x] + qty > 64:
+										itemGained[x] = 64
+										qty -= (64-itemGained[x])
 										continue
 							while qty != 0:
 								if space >= qty:
 									if qty <= 64:
-										itemGained.extend([itemName[0],qty])
+										itemGained[itemName[0]]=qty
 										qty = 0
 									else:
-										itemGained.extend([itemName[0],64])	
+										itemGained[itemName[0]]=64	
 										qty -= 64
 								else:
 									qty = space
 									if qty <= 64:
-										itemGained.extend([itemName[0],qty])
+										itemGained[itemName[0]]=qty
 										qty = 0
 									else:
-										itemGained.extend([itemName[0],64])	
+										itemGained[itemName[0]]=64
 										qty -= 64
 												
 						else:
 							while qty > 0:
 								if space >= qty:
 									if qty <= 64:
-										itemGained.extend([itemName[0],qty])
+										itemGained[itemName[0]]=qty
 										qty = 0
 									else:
-										itemGained.extend([itemName[0],64])
+										itemGained[itemName[0]]=64
 										qty -= 64
 								else:
 									qty = space
 									if qty <= 64:
-										itemGained.extend([itemName[0],qty])
+										itemGained[itemName[0]]=qty
 										qty = 0
 									else:
-										itemGained.extend([itemName[0],64])
+										itemGained[itemName[0]]=64
 										qty -= 64								
 				else:
 					continue
 			else:
 				if eq > 0:
+					if timer >= math.floor(dur/breakTime):
+						return
 					if 'Stone' in itemGained:
 						qty = 1
-						for x in range(len(itemGained)):
-							if 'Stone' == itemGained[x]:
-								if itemGained[x+1] < 64:
-									itemGained[x+1] += 1
+						timer += 1
+						for x in itemGained:
+							if 'Stone' == x:
+								if itemGained[x] < 64:
+									itemGained[x] += 1
 									qty = 0
 
 							else:
 								continue
 						if qty == 1 and space != 0:
-							itemGained.extend(['Stone',1])
+							itemGained['Stone']=1
 					else:
 						if space != 0:
-							itemGained.extend(['Stone',1])
+							itemGained['Stone']=1
 
-		timer += 1
+		
 
-def raiseError(ctx, errorCode):
-	print(errorCode)
-
-def getSize(itemName):
-	itemSize = dependancies.find_one(
+def getSize(itemName):						#  <------- WIP
+	itemSize = values.find_one(
 		{"_id": "sizeList"}, 
 		projection = {itemName: True}
 	)
 	return int(itemSize)
 	
 def availableSpace(id):
-	data = player.find_one({"_id": "inventory"})
+	data = inventories.find_one({"_id": id})
 
-	qty = ''
+	
 	inventorySpace = 0
 
 	for slot in data:
-		if slot in ('head','chest','torso','shoe','isEmpty'):
+		qty = ''
+		if slot in ("_id", 'head','chest','torso','shoe','isEmpty'):
 			continue
-		for ch in data[slot]:
-			if ch == 'x' or ch == '-':
-				break
-			else:
-				qty += ch
-		ctr = 1
-		for ch in data[slot]
-			if ch != " ":
-				ctr += 1
-				continue
-			else:
-				break
-		itemName = data[slot][ctr::]
-		size = getSize(itemName)
-		slotSpace = 64 - (int(qty)*size)
+
+		if data[slot] != None:
+			for ch in data[slot]:
+				if ch == 'x':
+					break
+				else:
+					qty += ch
+			ctr = 1
+			for ch in data[slot]:
+				if ch != " ":
+					ctr += 1
+					continue
+				else:
+					break
+			itemName = data[slot][ctr::]
+			#size = getSize(itemName)
+			#slotSpace = 64 - (int(qty)*size)
+			slotSpace = 64 - int(qty)
+		else:
+			slotSpace = 64
 		inventorySpace += slotSpace
 	return inventorySpace
+
+def inventorize(id, _dict):
+	playerInv = inventories.find_one(
+		{"_id": id}
+	)
+	
+	
+	playerInv.pop('_id')
+	playerInv.pop('head')
+	playerInv.pop('chest')
+	playerInv.pop('torso')
+	playerInv.pop('shoe')
+	playerInv.pop('isEmpty')
+	for item in _dict:
+		qty = _dict[item]
+		for slot in playerInv:
+			if playerInv[slot] == None or slot in ("_id","head","chest","torso","shoe","isEmpty"):
+				continue
+			if item in playerInv[slot]:
+				slotqty = ''
+				for ch in playerInv[slot]:
+					if ch == "x":
+						break
+					slotqty += ch
+				slotqty = int(slotqty)
+				if slotqty + qty <= 64:
+					playerInv[slot] = str(slotqty+qty)+"x "+item
+					qty = 0
+					break
+				else:
+					playerInv[slot] = "64x "+item
+					qty -= (64-slotqty)
+		while qty != 0:
+			for Slot in playerInv:
+				if qty == 0:
+					break
+				if playerInv[Slot] == None:
+					if qty <= 64:
+						playerInv[Slot] = str(qty)+"x "+item
+						qty = 0
+						break
+					else:
+						playerInv[Slot] = "64x "+item
+						qty -= (64-slotqty)	
+	
+	inventories.update_one(
+		{"_id": id},
+		{"$set": playerInv}
+	)
 
 #---------------------------------------------------------#
 #					Main Function						  #
@@ -311,7 +386,8 @@ def mine(user, *args):
 	if args[0] == 'stop':
 		mine_stop(user)
 	
-	time = int(t)
+	eq = args[0]
+	time = int(args[1])
 	numPicks = args[2]
 	mine_start(user,time,eq,numPicks)
 
@@ -323,7 +399,15 @@ if eq == 0:
 	numPicks = 0
 mine(user, eq, t, numPicks)	
 
-for x in range(len(itemGained)):
-	if x%2 == 1:
-		continue
-	print(itemGained[x],itemGained[x+1])
+injector = {}
+print(itemGained)
+for x in itemGained:
+	print(x,itemGained[x])
+
+inventorize(user, itemGained)
+
+	
+	
+
+
+	
